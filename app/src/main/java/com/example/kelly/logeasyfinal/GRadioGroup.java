@@ -3,14 +3,15 @@ package com.example.kelly.logeasyfinal;
 /**
  * Created by Kelly on 04/04/2015.
  */
-import java.util.ArrayList;
-import java.util.List;
 
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewParent;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GRadioGroup {
 

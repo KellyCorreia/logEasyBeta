@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="C:\Users\Kelly\.android\build-cache\7774fde4938489f4cc3ef49074449e14c61e0792\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="7ff613bf78ab057293892fdbd4169eda899c89b9">
+        <dex dex="C:\Users\Kelly\workspaceAndroidStudio\logEasyBeta\app\build\intermediates\pre-dexed\debug\classes_a5472b62a495323e3aeedceb091e5275ac665bf4.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Kelly\.android\build-cache\1d72633eb8770d5e940091d6b1ec88571c996da1\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="C:\Users\Kelly\workspaceAndroidStudio\logEasyBeta\app\build\intermediates\pre-dexed\debug\classes_8a5387eea81f982928f817252966488b8c7661df.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Kelly\.android\build-cache\9fe8fc78bdbc9c771d5343fe0013448f8c041f26\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="a08d65794b844d8e7540bf9a33859bf3b2482d7f">
+        <dex dex="C:\Users\Kelly\workspaceAndroidStudio\logEasyBeta\app\build\intermediates\pre-dexed\debug\classes_c30fa14ade0793e89827b25df6c9fe25473c062e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Kelly\.android\build-cache\55605165238dde7dcd5219f4c2ee10332211489b\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="f02263e35e52668dd17b73bf961437e3d562b35f">
+        <dex dex="C:\Users\Kelly\workspaceAndroidStudio\logEasyBeta\app\build\intermediates\pre-dexed\debug\classes_40691ebdf893554e3f59c171a0c3c7301ed94cc0.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Kelly\.android\build-cache\27d98f617ff32d3f01e32ad42d50ff82af08ef97\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="17f8750d5c0749e44dd7c54aa390d9c937803825">
+        <dex dex="C:\Users\Kelly\workspaceAndroidStudio\logEasyBeta\app\build\intermediates\pre-dexed\debug\classes_6811366caf738f84854f9796b771481bc043a1c4.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Kelly\.android\build-cache\db8db6d7a247c0425ef26957c7daef6b3ff655d6\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c976518693e89ad44fbfccfc654941eaec198d08">
+        <dex dex="C:\Users\Kelly\workspaceAndroidStudio\logEasyBeta\app\build\intermediates\pre-dexed\debug\classes_0ab152b3b76d6fb8c6b270cfaae4fd2518ae238d.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Kelly\.android\build-cache\4802d8a07de5e26961b26b063ccbe4a0463502e6\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="1630658fbc2d222b988603c27b4a4249586fbfe7">
+        <dex dex="C:\Users\Kelly\workspaceAndroidStudio\logEasyBeta\app\build\intermediates\pre-dexed\debug\classes_ae1d97169fec4feddff4b606a029d3d6e5e2c5ba.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Kelly\.android\build-cache\6fdd15b1b6c093cb4d222dc2b086c50bd01eedb0\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="0e8228b4bc69c6a2c8d7c18498a77e53417d2574">
+        <dex dex="C:\Users\Kelly\workspaceAndroidStudio\logEasyBeta\app\build\intermediates\pre-dexed\debug\classes_c1274962a0041d5e81b75a501b2697a093cbe496.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Kelly\.android\build-cache\8eee7f42b67df3bd9ae27d5847654d62949cf4a2\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="29fd6d3794b71491c2789708cd8d03c71feb8954">
+        <dex dex="C:\Users\Kelly\workspaceAndroidStudio\logEasyBeta\app\build\intermediates\pre-dexed\debug\classes_300636773b9ef26404513cd3fa816dda90695371.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Kelly\.android\build-cache\ede0d419002ada3088c9ba9b00c6e0fb9cb08a58\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="a96b762bde4139de855735f175ec4d17dca55a6d">
+        <dex dex="C:\Users\Kelly\workspaceAndroidStudio\logEasyBeta\app\build\intermediates\pre-dexed\debug\classes_b43415faf0d78ce6cd6aa747cdd31a9dc2ac8661.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Kelly\.android\build-cache\a0356300e1aed9bf55d1395d2769df84669816a1\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="3033cc3a2c68dff3e5b646d6d084bdbdf7d00b25">
+        <dex dex="C:\Users\Kelly\workspaceAndroidStudio\logEasyBeta\app\build\intermediates\pre-dexed\debug\classes_8b479fdd0e2a54d0d328e9ca5a59e34cb02b4c94.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Kelly\.android\build-cache\091c4b6d7426508648cd30011daf52585d7c13de\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="1c5a76debf0c2857ccad422c4a80ed785982f8df">
+        <dex dex="C:\Users\Kelly\workspaceAndroidStudio\logEasyBeta\app\build\intermediates\pre-dexed\debug\classes_80b551cdc57220c6c74bfe380f3841c12012e95c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Kelly\.android\build-cache\29c9dbe8da1ede5599661407fed1de6a55924055\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="4c93d99d454c975536bbe3b42283eee847f03ea3">
+        <dex dex="C:\Users\Kelly\workspaceAndroidStudio\logEasyBeta\app\build\intermediates\pre-dexed\debug\classes_503bf2f7bcd9351739fb386ac338c5a2dcef6acc.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Kelly\.android\build-cache\0c0944b86010e9217dafb2bff9ea3fa82de1eb2e\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="9224bc4c54ba95147c7eabd874573763c07cb6be">
+        <dex dex="C:\Users\Kelly\workspaceAndroidStudio\logEasyBeta\app\build\intermediates\pre-dexed\debug\classes_25a57684e52e7af19475551feb3e7b01fe011998.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Kelly\.android\build-cache\b4618a98cf5f51d85a5c3c9e485f2195a324db24\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e79aa3d9a16f8c9f16377c0608de70a8f31e5d80">
+        <dex dex="C:\Users\Kelly\workspaceAndroidStudio\logEasyBeta\app\build\intermediates\pre-dexed\debug\classes_0be249d679413589c1f8cbfaa191b78d10e0a19f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Kelly\.android\build-cache\ec1d9db2d80f0702f3c4ece85d7ff80aec313ca2\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="aee64634871d88a419d59eb743c1258a60f19700">
+        <dex dex="C:\Users\Kelly\workspaceAndroidStudio\logEasyBeta\app\build\intermediates\pre-dexed\debug\classes_a0e0346bf0817421eb694ffa87f6fd851c396e9b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Kelly\.android\build-cache\bd457df8266af819e7c4b066d2f4326d7abde389\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="0a0ef86b7fa568a52bf6214a0326ca1f1d618da7">
+        <dex dex="C:\Users\Kelly\workspaceAndroidStudio\logEasyBeta\app\build\intermediates\pre-dexed\debug\classes_885aa4cd1cf60f3cf1473421201055e70a13d480.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Kelly\.android\build-cache\0129964dae049a3a50818b08f508872521e9c5c5\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="4cd0b093824b3228fffc21ea369b98d0b1db6566">
+        <dex dex="C:\Users\Kelly\workspaceAndroidStudio\logEasyBeta\app\build\intermediates\pre-dexed\debug\classes_e0cbdf5e50826cfa45ab3facf45e261cb1d39263.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Kelly\.android\build-cache\97d6b68ba6057323ea68a3f7234ef01ad0d1ad5b\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="73ccb92b70112f2e463e415ef8d7275de7da6516">
+        <dex dex="C:\Users\Kelly\workspaceAndroidStudio\logEasyBeta\app\build\intermediates\pre-dexed\debug\classes_932736ee5c3ad4b98008ed65bb42cc533a9ef327.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Kelly\.android\build-cache\03b6094903a751361916c0692621a291e3a18bf1\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="6fb6ac3e8d3b9013819920d9ea11f3803c4c0033">
+        <dex dex="C:\Users\Kelly\workspaceAndroidStudio\logEasyBeta\app\build\intermediates\pre-dexed\debug\classes_79bb2192a7e59eb3557bc4f3a46162cef69c18f6.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Kelly\.android\build-cache\555a0f869326fc54261d3a135af8a34a20fdd9b2\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="055783146ba9654a725442563be78cad303aad1f">
+        <dex dex="C:\Users\Kelly\workspaceAndroidStudio\logEasyBeta\app\build\intermediates\pre-dexed\debug\classes_57c9d1c1c5af1a0e8517234a5af9eb12ffc614bf.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Kelly\.android\build-cache\37a6942fece55c5032b5f313463fd06a4dc1ac7b\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="4b868b833b0887aa48c4e581558eef4f1196f6a2">
+        <dex dex="C:\Users\Kelly\workspaceAndroidStudio\logEasyBeta\app\build\intermediates\pre-dexed\debug\classes_b70ae51a2bbd60743610379701a8d4ccd69eec74.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Kelly\.android\build-cache\30bdd68e35a70ad4ae7805ccdc5855e87e60fc8f\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="3c0b099f9de16b265ecd6122fcb603e7d0d29f90">
+        <dex dex="C:\Users\Kelly\workspaceAndroidStudio\logEasyBeta\app\build\intermediates\pre-dexed\debug\classes_9e2201e4f9017fb84a884699ccaaf5f2724e23bd.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Kelly\.gradle\caches\modules-2\files-2.1\com.android.support\support-annotations\25.1.0\64cb6b229a8bdfd907bc8dd46839a0053e4c018d\support-annotations-25.1.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="64cb6b229a8bdfd907bc8dd46839a0053e4c018d">
+        <dex dex="C:\Users\Kelly\workspaceAndroidStudio\logEasyBeta\app\build\intermediates\pre-dexed\debug\support-annotations-25.1.0_895ca9bd860df1893004479ca0f6d70e2a0693a8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Kelly\.android\build-cache\ba38faf29d1e75b44dedd7bd432f4f4daa18334e\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e3d791b42eaa90416cd0b2d2e608092794a3baa4">
+        <dex dex="C:\Users\Kelly\workspaceAndroidStudio\logEasyBeta\app\build\intermediates\pre-dexed\debug\classes_695ea8889f5f4fe76440e4fe14817b4ae991a374.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Kelly\.android\build-cache\34b31443f166c7c84fc18845188f9b268510cb13\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="b266c8faa5af72e579b9da36ef35053ffed6ac64">
+        <dex dex="C:\Users\Kelly\workspaceAndroidStudio\logEasyBeta\app\build\intermediates\pre-dexed\debug\classes_1d7c94d52eb7d8e7a740d7735f264fd56af42458.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Kelly\.android\build-cache\990e487c8c2e23aa979deb3e5b9fcaecfc44d0b5\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="2a53c4f3518116b8c6aee0e477233f0f7da8616f">
+        <dex dex="C:\Users\Kelly\workspaceAndroidStudio\logEasyBeta\app\build\intermediates\pre-dexed\debug\classes_3a585376253d93058c5bf166aa74fa31487308da.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Kelly\.android\build-cache\74d97bc21c39b28e119f100e2d40721ea4de6475\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="fb04b12526b0073c7fb1ebb70c5842d82ee95596">
+        <dex dex="C:\Users\Kelly\workspaceAndroidStudio\logEasyBeta\app\build\intermediates\pre-dexed\debug\classes_d1cf41b30d1457467f48e7b6fb4a2c746ac24679.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Kelly\.android\build-cache\fedda8ab847296ef4df8d3252314cec411f8c81f\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="41b3870cbe5fa546d8095b5b89d42cb69f3dd175">
+        <dex dex="C:\Users\Kelly\workspaceAndroidStudio\logEasyBeta\app\build\intermediates\pre-dexed\debug\classes_2119c7d38065c9575020ed8755c86262db848187.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Kelly\.android\build-cache\aadedb021683a242a42abe81b64c34d4a4d2ba60\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="ca3c7aa31e2726a400a6e552b93cb9f63c9a1e6d">
+        <dex dex="C:\Users\Kelly\workspaceAndroidStudio\logEasyBeta\app\build\intermediates\pre-dexed\debug\classes_98020ee1dc735d525e3b768fcbf0cf424083b5fb.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Kelly\.android\build-cache\ccdeaf13e2b9c9d8e5faa3a68048b41e69994314\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="ef5f051e7308febe289dc93c67c5f32785b4260a">
+        <dex dex="C:\Users\Kelly\workspaceAndroidStudio\logEasyBeta\app\build\intermediates\pre-dexed\debug\classes_55215d4b48e6d3148f66b2ef1f7018ad4ffcba5a.jar" />
+    </item>
+
+</items>
