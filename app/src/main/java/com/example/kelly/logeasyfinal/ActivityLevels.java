@@ -34,6 +34,7 @@ public class ActivityLevels extends AppCompatActivity implements LevelsAdapter.O
     private String[] mOptionsTitles;
 
     private ClassUser user;
+    private ClassCurso curso;
 
     int ICONS[] = {R.drawable.ic_action, R.drawable.ic_user, R.drawable.ic_scoreboard, R.drawable.ic_logoutbk};
     String NAME = "UserName";
@@ -50,6 +51,7 @@ public class ActivityLevels extends AppCompatActivity implements LevelsAdapter.O
         Bundle extras = getIntent().getExtras();
         user = extras.getParcelable("chosenUser");
         int i = extras.getInt("toast");
+        curso = extras.getParcelable("chosenCurso");
 
         NAME = user.getUsername();
         EMAIL = user.getEmail();

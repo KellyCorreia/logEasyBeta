@@ -6,12 +6,15 @@ import android.os.Parcelable;
 public class ClassLevel implements Parcelable {
 
     private int level_id;
+    private int curso_id;
     private String levelName;
     private String lesson;
     private String tip;
 
+
     public ClassLevel(){
         level_id = 0;
+        curso_id = 0;
         levelName="";
         lesson="";
         tip="";
@@ -21,8 +24,9 @@ public class ClassLevel implements Parcelable {
         readFromParcel(in);
     }
 
-    public ClassLevel(int l_id, String l_name, String l_lesson, String l_tip){
+    public ClassLevel(int l_id, String l_name, String l_lesson, String l_tip, int c_id){
         level_id=l_id;
+        curso_id = c_id;
         levelName=l_name;
         lesson=l_lesson;
         tip=l_tip;
@@ -34,6 +38,10 @@ public class ClassLevel implements Parcelable {
 
     public int getLevel_id() {
         return level_id;
+    }
+
+    public int getCurso_id() {
+        return curso_id;
     }
 
     public String getLesson() {
@@ -48,6 +56,10 @@ public class ClassLevel implements Parcelable {
         this.level_id = level_id;
     }
 
+    public void setCurso_id(int c_id) {
+        this.curso_id = c_id;
+    }
+
     public void setLevelname(String levelname) {
         this.levelName = levelname;
     }
@@ -60,7 +72,6 @@ public class ClassLevel implements Parcelable {
         this.tip = tip;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -69,6 +80,7 @@ public class ClassLevel implements Parcelable {
     @Override
     public void writeToParcel(Parcel out, int flags) {
         out.writeInt(level_id);
+        out.writeInt(curso_id);
         out.writeString(levelName);
         out.writeString(lesson);
         out.writeString(tip);
@@ -76,6 +88,7 @@ public class ClassLevel implements Parcelable {
 
     private void readFromParcel(Parcel in) {
         level_id = in.readInt();
+        curso_id = in.readInt();
         levelName = in.readString();
         lesson = in.readString();
         tip = in.readString();

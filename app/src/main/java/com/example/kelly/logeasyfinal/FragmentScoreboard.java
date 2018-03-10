@@ -54,7 +54,7 @@ public class FragmentScoreboard extends Fragment {
             wrongPerc = 0.0;
             if(totalAnswers != 0){
                 wrongPerc = (wrongNum/totalAnswers)*100;
-                wrongPerc = Double.parseDouble(new DecimalFormat("0.0").format(wrongPerc));
+                //wrongPerc = Double.parseDouble(new DecimalFormat("0.0").format(wrongPerc));
             }
             ScoreboardScreen scoreboard = new ScoreboardScreen(userName, levelName, points, wrongPerc);
 

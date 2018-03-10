@@ -10,6 +10,7 @@ public class InsertValues {
     }
 
     public void insertAllValues(){
+        this.addCursos();
         this.addLevels();
         this.addQuestions();
         this.addAnswers();
@@ -1272,6 +1273,11 @@ public class InsertValues {
 
     }
 
+    private void addCursos(){
+        ClassCurso c1 = new ClassCurso(1, "Curso de Logica", "Curso de logica proposicional");
+        db.addCurso(c1);
+    }
+
     private void addLevels() {
 
         //This is the insert for test purposes on the summer project
@@ -1292,7 +1298,7 @@ public class InsertValues {
                 "<p> Example:</p> <p><b>The following are propositions:</b></p> <p>The wind is the" +
                 " flow of gases.</p> <p>The wind blows south in the winter.</p> <p>The wind is " +
                 "blowing now.</p> | <p><b>The following are fragments:</b></p> <p> Wind </p> <p> " +
-                "The wind from Ireland </p> <p> What a cold wind!</p>", "Tip1");
+                "The wind from Ireland </p> <p> What a cold wind!</p>", "Tip1", 1);
         db.addLevel(l1);
 
         //This is the insert for the first version of the app
@@ -1334,7 +1340,7 @@ public class InsertValues {
                 "<p>This intention is usually signaled by certain indicator words. The following is a " +
                 "list of the more common indicator words:</p> | " +
                 "<p><b>Premise Indicators :</b></p> <p>Since :: Because ::  As ::  For :: Given that ::  Assuming that</p>" +
-                "<p><b>Conclusion Indicators:</b></p> <p>Therefore :: Thus :: So :: Consequently :: As a result :: It follows that</p>", "Tip2");
+                "<p><b>Conclusion Indicators:</b></p> <p>Therefore :: Thus :: So :: Consequently :: As a result :: It follows that</p>", "Tip2", 1);
         db.addLevel(l2);
 
         //This is the insert for the first version of the app
@@ -1361,7 +1367,7 @@ public class InsertValues {
                 "sentence will be false only if both propositions are false." + "</p>" + "<p>In the <b>exclusive " +
                 "“or”</b> the propositions are evaluated as true when <b>only one</b> of the claims is <b>true</b>. " +
                 "The whole statement is false when both claims have the same value, both false or " +
-                "both true." + "</p>" + "<p>The <b>“or”</b> operator can be also represented by <b>“v”</b>.</p>", "Tip 3");
+                "both true." + "</p>" + "<p>The <b>“or”</b> operator can be also represented by <b>“v”</b>.</p>", "Tip 3", 1);
         db.addLevel(l3);
 
         ClassLevel l4 = new ClassLevel(4,"Sand", "<p>Hello! This is Level 4, the last step you have to go through" +
@@ -1371,7 +1377,7 @@ public class InsertValues {
                 "<p>The <b>Contradictory</b> of A is a claim that <b>always</b> has the <b>opposite</b> truth value of A.</p>" +
                 "<p>Remember the conjunction is the compound claim that has the operator “OR” present. In order to write the " +
                 "contradictory of a conjunction, you need to know the following rule:<p>" +
-                "<p>not(A and B) = notA or notB</p>", "Tip 4");
+                "<p>not(A and B) = notA or notB</p>", "Tip 4", 1);
         db.addLevel(l4);
 
         ClassLevel l5 = new ClassLevel(5,"Snow", "<p>Hello! This is Level 5, the first step you have to go through" +
@@ -1381,7 +1387,7 @@ public class InsertValues {
                 "<p>Remember that the Contradictory of A is a claim that always has the opposite truth value of A.</p>" +
                 "<p>And also remember that the conjunction is the compound claim that has the operator “OR” present. In order " +
                 "to write the contradictory of a conjunction, you need to know the following rule:</p>" +
-                "<p>not(A or B) = notA and notB</p>", "Tip 5");
+                "<p>not(A or B) = notA and notB</p>", "Tip 5", 1);
         db.addLevel(l5);
 
         ClassLevel l6 = new ClassLevel(6,"Plant", "<p>Hello! This is Level 6, the last step you have to go through" +
@@ -1390,7 +1396,7 @@ public class InsertValues {
                 "</p>" + "<p>So, lets get started with the concepts:</p>" + "<p>The conditional proposition is represented in the " +
                 "format: <b>if A then B</b>. Where A = antecedent and B = consequent. A conditional claim is false when the antecedent" +
                 " is True but the consequent is false. When A is false or both A and B are True the proposition is True. Other way of" +
-                " addressing this:</p>" + "<p>B if A = if A then B</p>", "Tip 6");
+                " addressing this:</p>" + "<p>B if A = if A then B</p>", "Tip 6", 1);
         db.addLevel(l6);
 
         ClassLevel l7 = new ClassLevel(7,"Lightning", "<p>Hello! This is Level 7, the first step you have to go through" +
@@ -1398,7 +1404,7 @@ public class InsertValues {
                 "in order to complete this level, you have to prove your knowledge about Lightning by answering 5 questions right.</p>" +
                 "<p>So, lets get started with the concepts:</p>" +
                 "<p>The contradictory of a conditional - NOT(if A then B) is a conjunction. This compound claim is True if antecedent is" +
-                " true (A) but the consequence (B) is false. </p>" + "<p>not (if A then B) = A and not-B = A but not-B <> if A then not-B</p>", "Tip 7");
+                " true (A) but the consequence (B) is false. </p>" + "<p>not (if A then B) = A and not-B = A but not-B <> if A then not-B</p>", "Tip 7", 1);
         db.addLevel(l7);
 
         ClassLevel l8 = new ClassLevel(8,"Lava", "<p>Hello! This is Level 8, the last step you have to go through to get the " +
@@ -1407,20 +1413,20 @@ public class InsertValues {
                 "<p>Only If rule: A only if B = if A then B </p>" + "<p>Biconditional rule (conjoining two conditionals):</p>" +
                 "<p>A if and only if B = (A if B) and (A only if B)</p>" + "<p>written as: A if and only if B = A iff B = A=B</p>" +
                 "<p>or (if B then A) and (if A then B)</p>" + "<p>In this case, the claims A and B always have the same truth value: " +
-                "if A is true then B is true and vice versa. We symbolize the logical equivalence of statement p and q by p ≡ q ( p <--> q ).</p>", "Tip 8");
+                "if A is true then B is true and vice versa. We symbolize the logical equivalence of statement p and q by p ≡ q ( p <--> q ).</p>", "Tip 8", 1);
         db.addLevel(l8);
 
         ClassLevel l9 = new ClassLevel(9,"Dark City", "</p>Hello! This is Level 9, the first step you have to go through in order" +
                 " to become a <b>Hero!</b>. On this level you are going to learn about the <b>contrapositive</b> and, in order to complete this level, you have to " +
                 "protect your people from attack of the <b>Dark City</b> by answering 5 questions right.</p> <p>So, lets get started with the concepts:</p>" + "<p>General rule: if A then B = if not-B " +
                 "then not-A</p>" + "<p>ex: Conditional: (A: You won’t become a good player) if (B: you don’t practice)</p>" + "<p>where A: consequent and B: antecedent</p>" +
-                "<p>Contrapositive: If you become a good player then you practiced.</p>", "Tip 9");
+                "<p>Contrapositive: If you become a good player then you practiced.</p>", "Tip 9", 1);
         db.addLevel(l9);
 
         ClassLevel l10 = new ClassLevel(10, "World Master", "<p><b>Congratulation!</b> This is Level 10, the last step you have to go through in order to become " +
                 "a <b>The World Master</b> On this level you are going to learn about <b>inference</b> and, in order to complete this level, you have to save the world by answering" +
                 " 5 questions right.</p>" + "<p>So, lets get started with the concepts:</p>" + "<p>The rule: true statements stand as premises and they can derive in conclusions" +
-                " (respecting the rules learned by now and the semantics). </p>" + "<p>A→B</p>" + "<p>A/B</p>", "Tip 10");
+                " (respecting the rules learned by now and the semantics). </p>" + "<p>A→B</p>" + "<p>A/B</p>", "Tip 10", 1);
         db.addLevel(l10);
     }
 }

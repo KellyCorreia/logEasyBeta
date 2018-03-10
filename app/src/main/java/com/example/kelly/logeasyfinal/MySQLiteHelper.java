@@ -64,6 +64,17 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + " integer, " + COLUMN_LEVEL_ID
             + " integer);";
 
+    //Declaration of Table CURSO
+    public static final String TABLE_CURSO = "table_curso";
+    public static final String COLUMN_CURSO_ID = "c_id";
+    public static final String COLUMN_CURSO_NAME = "c_name";
+    public static final String COLUMN_DESCRICAO = "descricao";
+    private static final String CURSO_DATABASE_CREATE = "CREATE TABLE "
+            + TABLE_CURSO + "(" + COLUMN_CURSO_ID
+            + " integer primary key autoincrement, " + COLUMN_CURSO_NAME
+            + " text not null, " + COLUMN_DESCRICAO
+            + " text);";
+
     //Declaration of Table LEVEL
     public static final String TABLE_LEVEL = "table_level";
     public static final String COLUMN_LEVEL_NAME = "l_name";
@@ -74,8 +85,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + " integer primary key autoincrement, " + COLUMN_LEVEL_NAME
             + " text not null, " + COLUMN_LESSON
             + " text," + COLUMN_TIP
+            + " text," + COLUMN_CURSO_ID
             + " text);";
-
 
     //ver se ainda precisa dessa tabela ou faze-la por meio de consulta
     //Declaration of Table SCOREBOARD_SCREEN
@@ -104,6 +115,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         db.execSQL(USERS_DATABASE_CREATE);
         db.execSQL(ANSWERS_DATABASE_CREATE);
         db.execSQL(SCOREBOARD_DATABASE_CREATE);
+        db.execSQL(CURSO_DATABASE_CREATE);
         db.execSQL(LEVEL_DATABASE_CREATE);
         db.execSQL(SCOREBOARD_SCREEN_DATABASE_CREATE);
         InsertValues data = new InsertValues(this);
@@ -118,11 +130,21 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     /*
      All methods to add values to the database.
+
                                                */
+
+    public void addCurso(ClassCurso c) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_CURSO_ID, c.getCurso_id());
+        values.put(COLUMN_CURSO_NAME, c.getCursoname());
+        values.put(COLUMN_DESCRICAO, c.getDescricao());
+        database.insert(TABLE_CURSO, null, values);
+    }
 
     public void addLevel(ClassLevel l) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_LEVEL_ID, l.getLevel_id());
+        values.put(COLUMN_CURSO_ID, l.getCurso_id());
         values.put(COLUMN_LEVEL_NAME, l.getLevelname());
         values.put(COLUMN_LESSON, l.getLesson());
         values.put(COLUMN_TIP, l.getTip());
@@ -245,6 +267,23 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         return usersList;
+    }
+
+    public List<ClassCurso> getAllCursos() {
+        List<ClassCurso> cursosList = new ArrayList<>();
+        String selectQuery = "SELECT * FROM " + TABLE_CURSO + ";";
+        database = this.getReadableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                ClassCurso curso = new ClassCurso();
+                curso.setCurso_id(cursor.getInt(0));
+                curso.setCursoname(cursor.getString(1));
+                curso.setDescricao(cursor.getString(2));
+                cursosList.add(curso);
+            } while (cursor.moveToNext());
+        }
+        return cursosList;
     }
 
     public ClassScoreboard getScore(long UserID) {

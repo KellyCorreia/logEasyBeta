@@ -59,7 +59,7 @@ public class ActivityLogin extends Activity {
                 password = mPasswordView.getText().toString();
                 if(password.equals(user.getPass())){
                     passwordIsValid = true;
-                    Intent intent = new Intent(ActivityLogin.this, ActivityLevels.class);
+                    Intent intent = new Intent(ActivityLogin.this, ActivityChoose_Curso.class);
                     intent.putExtra("chosenUser", user);
                     intent.putExtra("toast", 1);
                     startActivity(intent);

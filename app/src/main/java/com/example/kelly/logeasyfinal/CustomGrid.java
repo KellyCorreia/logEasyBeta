@@ -47,7 +47,7 @@ public class CustomGrid extends BaseAdapter{
                 textView.setText(web.get(position));
                 imageView.setImageResource(Imageid.get(position));
             } else {
-                grid = (View) convertView;
+                grid = convertView;
             }
             return grid;
         }
