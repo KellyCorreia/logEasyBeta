@@ -189,7 +189,7 @@ public class ActivityQuiz extends Activity {
 
         intent.setClass(ActivityQuiz.this, ActivityLesson.class);
 
-        if((score==(selecLevel.getLevel_id()*50))&&(score<= 50)){
+        if(score==(selecLevel.getLevel_id()*50)){
             db.updatingScore(score, User, selecLevel.getLevel_id()+1);
             selecLevel = db.getLevel(selecLevel.getLevel_id()+1);
             Score = db.getScore(User.getUser_id());
@@ -201,7 +201,9 @@ public class ActivityQuiz extends Activity {
                 Toast.makeText(ActivityQuiz.this, "You defeated the "+selecLevel.getLevelname()+" !", Toast.LENGTH_SHORT).show();
             else
                 Toast.makeText(ActivityQuiz.this, "Congratulations! You master the "+selecLevel.getLevelname()+" element!", Toast.LENGTH_SHORT).show();
-            setAlertView();
+            //setAlertView();
+            startActivity(intent);
+            finish();
         }else{
             db.updatingScore(score, User, Score.getLevel_id());
             if(score == 100){

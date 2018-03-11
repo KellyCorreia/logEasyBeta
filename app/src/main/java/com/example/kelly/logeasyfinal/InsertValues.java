@@ -20,7 +20,7 @@ public class InsertValues {
 
         //these are the questions for test purposes on the summer project
         //Level 1
-        ClassQuestion q1 = new ClassQuestion("Q001", "One essential feature of a proposition is:", 1);
+        /*ClassQuestion q1 = new ClassQuestion("Q001", "One essential feature of a proposition is:", 1);
         db.addQuestion(q1);
 
         ClassQuestion q2 = new ClassQuestion("Q002", "Does the following express a proposition or a " +
@@ -77,12 +77,12 @@ public class InsertValues {
 
         ClassQuestion q17 = new ClassQuestion("Q015", " Determine whether the following contains an" +
                 " argument.\n In order to make a song musicians need to add sounds together in a harmonic way.", 2);
-        db.addQuestion(q17);
+        db.addQuestion(q17);*/
 
 
 
        //These are the questions from the first version of the app
-        /*ClassQuestion q1 = new ClassQuestion("Q001", "Which one is the contradictory of the " +
+        ClassQuestion q1 = new ClassQuestion("Q001", "Which one is the contradictory of the " +
                 "following claim: \n “Sometimes the wind is blowing hard.”", 1);
         db.addQuestion(q1);
 
@@ -421,7 +421,7 @@ public class InsertValues {
         ClassQuestion q94 = new ClassQuestion("Q094", "Please select the inference that derive from the following premises:\n" +
                 "p: If you have super powers you are a superhero.\n" + "q: If you don’t have super powers than you are human.\n" +
                 "r: If you are a superhero then you need to save the world.", 10);
-        db.addQuestion(q94);*/
+        db.addQuestion(q94);
 
 
     }
@@ -430,7 +430,7 @@ public class InsertValues {
 
         //These are the answers for testing purposes on the summer project
         //level 1
-        ClassAnswer a1 = new ClassAnswer("A001a", "It asks a question.", "Q001", 0);
+        /*ClassAnswer a1 = new ClassAnswer("A001a", "It asks a question.", "Q001", 0);
         db.addAnswer(a1);
 
         ClassAnswer a2 = new ClassAnswer("A001b", "It is either true or false.", "Q001", 1);
@@ -517,10 +517,10 @@ public class InsertValues {
 
         ClassAnswer a48 = new ClassAnswer("A017b", "No, it doesn't contain an argument.", "Q017", 1);
         db.addAnswer(a48);
-
+*/
 
         //These are the answers for the first version of logeasy
-        /*ClassAnswer a1 = new ClassAnswer("A001a", "The wind is not blowing hard.", "Q001", 0);
+        ClassAnswer a1 = new ClassAnswer("A001a", "The wind is not blowing hard.", "Q001", 0);
         db.addAnswer(a1);
 
         ClassAnswer a2 = new ClassAnswer("A001b", "Sometimes the wind is not blowing hard.", "Q001", 0);
@@ -1269,7 +1269,7 @@ public class InsertValues {
 
         ClassAnswer a283 = new ClassAnswer("A094c", "Humans need to save the world.", "Q094", 0);
         db.addAnswer(a283);
-*/
+
 
     }
 

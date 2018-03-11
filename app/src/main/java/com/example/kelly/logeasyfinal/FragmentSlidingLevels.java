@@ -83,7 +83,7 @@ public class FragmentSlidingLevels extends Fragment {
 
     public void setIntent(int a) {
         chosenLevel = db.getLevel(a);
-        if (pointsU>=(((chosenLevel.getLevel_id()-1)*50)+10)){
+        if (pointsU>=((chosenLevel.getLevel_id()-1)*50)){
             intent = new Intent(getActivity(), ActivityQuiz.class);
         } else {
             intent = new Intent(getActivity(), ActivityLesson.class);
@@ -134,12 +134,12 @@ public class FragmentSlidingLevels extends Fragment {
         @Override
         public void onClick(View v) {
             if (pointsU >= (i*50)) {
-                if (i < 2) {
+                //if (i < 2) {
                     setIntent(i + 1);
-                }
-                else{
-                    setToast();
-                }
+                //}
+                //else{
+                //    setToast();
+                //}
             }
             else
                 setToast();
