@@ -58,23 +58,25 @@
         </LinearLayout>
 
         <ImageButton
-            android:layout_width="130dp"
-            android:layout_height="40dp"
             android:id="@+id/btncontinuar"
+            android:layout_width="196dp"
+            android:layout_height="50dp"
             android:layout_gravity="bottom|center_horizontal"
-            android:background="@color/Azul"
-            android:gravity="bottom"
             android:layout_marginTop="10dp"
-            android:src="@drawable/buttoncontinuar"
-            android:elevation="15dp"/>
+            android:background="@color/Azul"
+            android:elevation="15dp"
+            android:gravity="bottom"
+            android:src="@drawable/buttoncontinuar" />
     </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/layoutBottompCursos"
         android:layout_width="305dp"
-        android:layout_height="61dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
+        android:layout_height="100dp"
+        android:layout_alignLeft="@+id/layoutTopCursos"
+        android:layout_alignStart="@+id/layoutTopCursos"
+        android:layout_below="@+id/layoutCenterCursos"
+        android:layout_marginTop="41dp"
         android:background="@drawable/bottomcursospage"
         android:gravity="bottom|end|center_horizontal"
         android:orientation="vertical">

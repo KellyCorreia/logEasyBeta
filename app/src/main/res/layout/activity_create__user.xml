@@ -230,13 +230,13 @@
                         android:layout_gravity="left|center_vertical">
 
                         <ImageView
-                            android:layout_width="110dp"
-                            android:layout_height="15dp"
                             android:id="@+id/imvUsername"
-                            android:src="@drawable/username"
+                            android:layout_width="107dp"
+                            android:layout_height="15dp"
                             android:layout_gravity="left|center_vertical"
                             android:adjustViewBounds="false"
-                            android:baselineAlignBottom="false" />
+                            android:baselineAlignBottom="false"
+                            android:src="@drawable/username" />
 
                         <EditText
                             android:layout_width="190dp"
