@@ -26,10 +26,10 @@
     The font  used in some of the images is a free font: Purisa( Thai handwriting outline font.Copyright (&#169;) 2003, 2004 Poonlap Veerathanabutr) </string>
 
     <string-array name="options_array">
-        <item>Levels Page</item>
-        <item>User Details</item>
-        <item>Scoreboard</item>
-        <item>Quit</item>
+        <item>Níveis</item>
+        <item>Perfil</item>
+        <item>Pontuações</item>
+        <item>Sair</item>
     </string-array>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>

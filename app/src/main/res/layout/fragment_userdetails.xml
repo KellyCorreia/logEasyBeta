@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Your avatar is: "
+            android:text="Seu avatar é: "
             android:id="@+id/textView2"
             android:layout_gravity="center_horizontal" />
 
@@ -97,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:textColor="#ff5c3022"
-                android:text="Username:"
+                android:text="Usuário:"
                 android:textSize="14sp"
                 android:textStyle="bold"
 
@@ -157,7 +157,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:textColor="#ff5c3022"
-                android:text="Points:"
+                android:text="Pontuação:"
                 android:textSize="14sp"
                 android:textStyle="bold"
 
@@ -186,7 +186,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:textColor="#ff5c3022"
-                android:text="Level:"
+                android:text="Nível:"
                 android:textSize="14sp"
                 android:textStyle="bold"
 
@@ -215,7 +215,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:textColor="#ff5c3022"
-                android:text="Answered Questions:"
+                android:text="Questões Respondidas:"
                 android:textSize="14sp"
                 android:textStyle="bold"
 
@@ -244,7 +244,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:textColor="#ff5c3022"
-                android:text="Answered Wrong:"
+                android:text="Questões Erradas:"
                 android:textSize="14sp"
                 android:textStyle="bold"
 
