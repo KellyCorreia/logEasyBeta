@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.kelly.logeasyfinal.modelo.Conteudo;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -26,7 +28,7 @@ public class FragmentSlidingLesson extends Fragment {
     private static int count = 1;
 
     private ViewPager mViewPager;
-    private ClassLevel chosenLevel;
+    private Conteudo chosenLevel;
     private String lessonS;
     ArrayList<String> lessonParts = new ArrayList<>();
 
@@ -34,9 +36,9 @@ public class FragmentSlidingLesson extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        chosenLevel = (ClassLevel) getArguments().getParcelable("chosenLevel");
-        //lesson = new SpannedString(Html.fromHtml(chosenLevel.getLesson()));
-        lessonS = chosenLevel.getLesson();
+        chosenLevel = (Conteudo) getArguments().getParcelable("chosenLevel");
+        //lesson = new SpannedString(Html.fromHtml(chosenLevel.getLicao()));
+        lessonS = chosenLevel.getLicao();
         splitLesson();
         count = lessonParts.size();
         return inflater.inflate(R.layout.fragment_base, container, false);
@@ -69,7 +71,7 @@ public class FragmentSlidingLesson extends Fragment {
 
             TextView txtLesson = (TextView) view.findViewById(R.id.txtLesson);
 
-           // txtLesson.setText(Html.fromHtml(chosenLevel.getLesson()));
+           // txtLesson.setText(Html.fromHtml(chosenLevel.getLicao()));
             txtLesson.setText(Html.fromHtml(lessonParts.get(position)));
             if((position+1)==lessonParts.size()){
                 ImageView icon = (ImageView) view.findViewById(R.id.iconNext);

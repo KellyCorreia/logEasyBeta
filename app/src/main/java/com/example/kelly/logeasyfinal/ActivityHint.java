@@ -9,6 +9,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.kelly.logeasyfinal.modelo.Aluno;
+import com.example.kelly.logeasyfinal.modelo.CursoAluno;
+import com.example.kelly.logeasyfinal.persistencia.MySQLiteHelper;
+import com.example.kelly.logeasyfinal.modelo.Conteudo;
+
 import java.util.Random;
 
 
@@ -19,9 +24,9 @@ public class ActivityHint extends Activity {
     ImageView ImgHint;
     RelativeLayout layout;
     LinearLayout firstLayout;
-    ClassUser user;
-    ClassScoreboard score;
-    ClassLevel seleclevel;
+    Aluno aluno;
+    CursoAluno score;
+    Conteudo seleclevel;
     Random rd = new Random();
 
     @Override
@@ -30,9 +35,9 @@ public class ActivityHint extends Activity {
         setContentView(R.layout.activity_hint);
 
         Bundle extras = getIntent().getExtras();
-        user = (ClassUser)extras.getParcelable("chosenUser");
-        seleclevel = (ClassLevel)extras.getParcelable("chosenLevel");
-        score = (ClassScoreboard)extras.getParcelable("userScore");
+        aluno = (Aluno) extras.getParcelable("chosenUser");
+        seleclevel = (Conteudo)extras.getParcelable("chosenLevel");
+        score = (CursoAluno) extras.getParcelable("userScore");
 
         txtPoints = (TextView)findViewById(R.id.txtPoints);
         btnPlay=(Button)findViewById(R.id.btnPlay);
@@ -54,9 +59,9 @@ public class ActivityHint extends Activity {
     private void setHintView(){
         MySQLiteHelper db = new MySQLiteHelper(this);
 
-        txtPoints.setText(Integer.toString(score.getPoints()));
+        txtPoints.setText(Integer.toString(score.getPontuacao()));
 
-        switch (user.getAvatar()){
+        switch (aluno.getAvatar().getNome()){
             case "Avatar1":
                 int random = rd.nextInt(4);
                 if(random == 0)
@@ -126,7 +131,7 @@ public class ActivityHint extends Activity {
                 break;
         }
 
-        switch(seleclevel.getLevel_id()){
+        switch(seleclevel.getNivel().getOrdem()){
             case 1:
                 layout.setBackgroundResource(R.drawable.backgroundlevel1);
                 btnPlay.setBackgroundResource(R.drawable.buttomhin1);
@@ -151,30 +156,6 @@ public class ActivityHint extends Activity {
                 layout.setBackgroundResource(R.drawable.backgroundlevel5);
                 btnPlay.setBackgroundResource(R.drawable.buttomhin5);
                 ImgHint.setImageResource(R.drawable.level5hint);
-                break;
-            case 6:
-                layout.setBackgroundResource(R.drawable.backgroundlevel6);
-                btnPlay.setBackgroundResource(R.drawable.buttomhin6);
-                ImgHint.setImageResource(R.drawable.level6hint);
-                break;
-            case 7:
-                layout.setBackgroundResource(R.drawable.backgroundlevel7);
-                btnPlay.setBackgroundResource(R.drawable.buttomhin7);
-                ImgHint.setImageResource(R.drawable.level7hint);
-                break;
-            case 8:
-                layout.setBackgroundResource(R.drawable.backgroundlevel8);
-                btnPlay.setBackgroundResource(R.drawable.buttomhin8);
-                ImgHint.setImageResource(R.drawable.level8hint);
-            case 9:
-                layout.setBackgroundResource(R.drawable.backgroundlevel9);
-                btnPlay.setBackgroundResource(R.drawable.buttomhin9);
-                ImgHint.setImageResource(R.drawable.level9hint);
-                break;
-            case 10:
-                layout.setBackgroundResource(R.drawable.backgroundlevel10);
-                btnPlay.setBackgroundResource(R.drawable.buttomhin10);
-                ImgHint.setImageResource(R.drawable.level10hint);
                 break;
         }
 

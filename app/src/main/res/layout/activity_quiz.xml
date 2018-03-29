@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.kelly.logeasysummerresearch.QuizActivity"
+    tools:context="com.example.kelly.logeasyfinal.ActivityQuiz"
     android:id="@+id/layoutQuiz"
     android:background="@drawable/backgroundlevel1">
 
@@ -132,7 +132,7 @@
                     android:layout_alignParentLeft="true"
                     android:onClick= "OnClick"
                     android:layout_gravity="center"
-                    android:background="@drawable/lesson" />
+                    android:background="@drawable/licao" />
 
                 <Button
                     android:layout_width="120dp"

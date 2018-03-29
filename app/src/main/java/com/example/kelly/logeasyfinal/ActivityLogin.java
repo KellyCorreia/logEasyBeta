@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AutoCompleteTextView;
@@ -15,13 +16,16 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.kelly.logeasyfinal.modelo.Aluno;
+import com.example.kelly.logeasyfinal.modelo.User;
+
 public class ActivityLogin extends Activity {
 
     private AutoCompleteTextView mEmailView;
     private View mProgressView;
     private View mLoginFormView;
     private boolean passwordIsValid = false;
-    private ClassUser user;
+    private Aluno aluno;
     private String password;
 
     @Override
@@ -31,21 +35,21 @@ public class ActivityLogin extends Activity {
 
         //Getting the object user from the previous screen
         Bundle extras = getIntent().getExtras();
-        user = (ClassUser) extras.getParcelable("chosenUser");
+        aluno = (Aluno) extras.getParcelable("chosenUser");
 
         //Setting the Label with the userName
         TextView txtViewUser = (TextView) findViewById(R.id.lblUsername);
-        txtViewUser.setText(user.getUsername());
+        txtViewUser.setText(aluno.getUsuario().getUsername());
 
         //Setting image avatar
         ImageView imageAvatar = (ImageView) findViewById(R.id.imvUserGuide);
-        if(user.getAvatar().equals("Avatar1")){
+        if(aluno.getAvatar().getNome().equals("Avatar1")){
             imageAvatar.setImageResource(R.drawable.avatar1);
-        }else if(user.getAvatar().equals("Avatar2")) {
+        }else if(aluno.getAvatar().getNome().equals("Avatar2")) {
             imageAvatar.setImageResource(R.drawable.avatar2);
-        }else if (user.getAvatar().equals("Avatar3")){
+        }else if (aluno.getAvatar().getNome().equals("Avatar3")){
             imageAvatar.setImageResource(R.drawable.avatar3);
-        }else if (user.getAvatar().equals("Avatar4")){
+        }else if (aluno.getAvatar().getNome().equals("Avatar4")){
             imageAvatar.setImageResource(R.drawable.avatar4);
         }
 
@@ -57,10 +61,10 @@ public class ActivityLogin extends Activity {
                 mPasswordView = (EditText) findViewById(R.id.txtPassword);
                 //code to test the password
                 password = mPasswordView.getText().toString();
-                if(password.equals(user.getPass())){
+                if(password.equals(aluno.getUsuario().getPassword())){
                     passwordIsValid = true;
                     Intent intent = new Intent(ActivityLogin.this, ActivityChoose_Curso.class);
-                    intent.putExtra("chosenUser", user);
+                    intent.putExtra("chosenUser", (Parcelable) aluno);
                     intent.putExtra("toast", 1);
                     startActivity(intent);
                     finish();

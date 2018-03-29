@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +19,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 import android.support.v4.app.FragmentTransaction;
+
+import com.example.kelly.logeasyfinal.modelo.Aluno;
+import com.example.kelly.logeasyfinal.modelo.Curso;
+import com.example.kelly.logeasyfinal.modelo.User;
 
 import java.util.Locale;
 
@@ -33,8 +38,8 @@ public class ActivityLevels extends AppCompatActivity implements LevelsAdapter.O
     private CharSequence mTitle;
     private String[] mOptionsTitles;
 
-    private ClassUser user;
-    private ClassCurso curso;
+    private Aluno aluno;
+    private Curso curso;
 
     int ICONS[] = {R.drawable.ic_action, R.drawable.ic_user, R.drawable.ic_scoreboard, R.drawable.ic_logoutbk};
     String NAME = "UserName";
@@ -49,13 +54,13 @@ public class ActivityLevels extends AppCompatActivity implements LevelsAdapter.O
 
         //Getting the object user from the previous screen
         Bundle extras = getIntent().getExtras();
-        user = extras.getParcelable("chosenUser");
+        aluno = extras.getParcelable("chosenUser");
         int i = extras.getInt("toast");
         curso = extras.getParcelable("chosenCurso");
 
-        NAME = user.getUsername();
-        EMAIL = user.getEmail();
-        PROFILE = getResources().getIdentifier(user.getAvatar().toLowerCase(Locale.getDefault()),
+        NAME = aluno.getUsuario().getUsername();
+        EMAIL = aluno.getUsuario().getEmail();
+        PROFILE = getResources().getIdentifier(aluno.getAvatar().getNome().toLowerCase(Locale.getDefault()),
                 "drawable", this.getPackageName());
 
         if (savedInstanceState == null) {
@@ -63,8 +68,8 @@ public class ActivityLevels extends AppCompatActivity implements LevelsAdapter.O
             setSupportActionBar(mToolbar);
             mToolbar.setTitleTextColor(getResources().getColor(R.color.Branco));
             if (i == 1) {
-                Toast.makeText(ActivityLevels.this, "Welcome, " + user.getUsername() + " !", Toast.LENGTH_SHORT).show();
-                Toast.makeText(ActivityLevels.this, "Choose a Level to start the challenge!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ActivityLevels.this, "Bem Vindo, " + aluno.getNome() + " !", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ActivityLevels.this, "Escolha um nível para iniciar o desafio!", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -170,7 +175,8 @@ public class ActivityLevels extends AppCompatActivity implements LevelsAdapter.O
         switch (position) {
             case 0:
                 FragmentSlidingLevels fragment = new FragmentSlidingLevels();
-                args.putParcelable("chosenUser", user);
+                args.putParcelable("chosenUser", aluno);
+                args.putParcelable("chosenCurso", curso);
                 fragment.setArguments(args);
                 // aqui ele seta o que vai ser substituido dentro do layout
                 transaction.replace(R.id.sample_content_fragment, fragment);
@@ -178,7 +184,8 @@ public class ActivityLevels extends AppCompatActivity implements LevelsAdapter.O
                 break;
             case 1:
                 FragmentUserDetails ufragment = new FragmentUserDetails();
-                args.putParcelable("chosenUser", user);
+                args.putParcelable("chosenUser", aluno);
+                args.putParcelable("chosenCurso", curso);
                 ufragment.setArguments(args);
                 // aqui ele seta o que vai ser substituido dentro do layout
                 transaction.replace(R.id.sample_content_fragment, ufragment);
@@ -238,7 +245,8 @@ public class ActivityLevels extends AppCompatActivity implements LevelsAdapter.O
     public void onRestart() {
         super.onRestart();
         Intent intent = new Intent(ActivityLevels.this, ActivityLevels.class);
-        intent.putExtra("chosenUser", user);
+        intent.putExtra("chosenUser", (Parcelable) aluno);
+        intent.putExtra("chosenCurso", (Parcelable) curso);
         intent.putExtra("toast", 0);
         startActivity(intent);
         this.finish();
@@ -246,14 +254,14 @@ public class ActivityLevels extends AppCompatActivity implements LevelsAdapter.O
     public void finishApplication() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ActivityLevels.this);
-        builder.setTitle("Log out")
-                .setMessage("Proceed with log out?")
+        builder.setTitle("Encerrar")
+                .setMessage("Deseja finalizar a aplicação?")
                 .setCancelable(true)
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                     }
-                }).setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                }).setPositiveButton("Sim", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 finish();
             }

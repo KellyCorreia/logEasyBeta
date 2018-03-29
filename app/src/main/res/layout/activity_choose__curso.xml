@@ -3,7 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    tools:context="com.example.kelly.logeasysummerresearch.Choose_Curso"
+    tools:context="com.example.kelly.logeasyfinal.ActivityChoose_Curso"
     android:background="#ffffe48f"
     android:padding="15dp">
 

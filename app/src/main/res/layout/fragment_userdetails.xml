@@ -328,30 +328,6 @@
                 android:src="@drawable/level5s"
                 android:layout_marginLeft="5dp"
                 android:visibility="gone" />
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:id="@+id/imageView6"
-                android:src="@drawable/level6s"
-                android:layout_marginLeft="5dp"
-                android:visibility="gone" />
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:id="@+id/imageView7"
-                android:src="@drawable/level7s"
-                android:layout_marginLeft="5dp"
-                android:visibility="gone" />
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:id="@+id/imageView8"
-                android:src="@drawable/level8s"
-                android:layout_marginLeft="5dp"
-                android:visibility="gone" />
         </TableRow>
 
         <TextView
@@ -375,16 +351,8 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:id="@+id/imageView9"
-                android:src="@drawable/level9s"
+                android:src="@drawable/level5s"
                 android:layout_marginLeft="15dp"
-                android:visibility="gone" />
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:id="@+id/imageView10"
-                android:src="@drawable/level10s"
-                android:layout_marginLeft="5dp"
                 android:visibility="gone" />
         </TableRow>
 

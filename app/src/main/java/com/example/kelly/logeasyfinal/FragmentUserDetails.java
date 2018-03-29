@@ -10,27 +10,34 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.kelly.logeasyfinal.modelo.Aluno;
+import com.example.kelly.logeasyfinal.modelo.CursoAluno;
+import com.example.kelly.logeasyfinal.persistencia.MySQLiteHelper;
+import com.example.kelly.logeasyfinal.modelo.Conteudo;
+import com.example.kelly.logeasyfinal.modelo.User;
+
 import java.util.Locale;
 
 public class FragmentUserDetails extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ClassScoreboard userScore;
-        ClassUser user;
+        CursoAluno userScore;
+        Aluno aluno;
         MySQLiteHelper db;
-        ClassLevel userLevel;
+        Conteudo userLevel;
 
         ProgressBar mProgress;
 
-        int circleAvatarV,pointsUV,answeredWrongUV,questionsA;
+        int circleAvatarV,pointsUV, questionsA;
+        Double answeredWrongUV;
         String levelNameV,levelDiscripV,usernameUV,emailUV, levelUV;
 
         View view = inflater.inflate(R.layout.fragment_userdetails, container, false);
-        user = getArguments().getParcelable("chosenUser");
+        aluno = getArguments().getParcelable("chosenUser");
         db = new MySQLiteHelper(getActivity());
-        userScore = db.getScore(user.getUser_id());
-        userLevel = db.getLevel(userScore.getLevel_id());
+        userScore = db.getCursoAluno(aluno.getId());
+        userLevel = db.getConteudo(userScore.getConteudo().getId());
 
         ImageView circleAvatar = (ImageView)view.findViewById(R.id.circleAvatar);
         TextView levelName = (TextView)view.findViewById(R.id.levelName);
@@ -42,31 +49,31 @@ public class FragmentUserDetails extends Fragment {
         TextView answeredWrongU = (TextView)view.findViewById(R.id.answeredWrongU);
         TextView answeredQuestions = (TextView)view.findViewById(R.id.answeredQuestionsU);
 
-        circleAvatarV = getResources().getIdentifier(user.getAvatar().toLowerCase(Locale.getDefault()),"drawable",getActivity().getPackageName());
+        circleAvatarV = getResources().getIdentifier(aluno.getAvatar().getNome().toLowerCase(Locale.getDefault()),"drawable",getActivity().getPackageName());
         circleAvatar.setImageResource(circleAvatarV);
 
-        levelNameV =userLevel.getLevelname();
+        levelNameV =userLevel.getNome();
         levelName.setText(levelNameV);
 
-        levelDiscripV = userLevel.getLevelname();
+        levelDiscripV = userLevel.getNome();
         levelDiscrip.setText(levelDiscripV);
 
-        usernameUV = user.getUsername();
+        usernameUV = aluno.getUsuario().getUsername();
         usernameU.setText(usernameUV);
 
-        emailUV= user.getEmail();
+        emailUV= aluno.getUsuario().getEmail();
         emailU.setText(emailUV);
 
-        pointsUV = userScore.getPoints();
+        pointsUV = userScore.getPontuacao();
         pointsU.setText((String.valueOf(pointsUV)));
 
-        answeredWrongUV = userScore.getWrong_number();
+        answeredWrongUV = userScore.getPercentualErro();
         answeredWrongU.setText((String.valueOf(answeredWrongUV)));
 
-        levelUV = Integer.toString(userScore.getLevel_id());
+        levelUV = Integer.toString(userScore.getConteudo().getNivel().getOrdem());
         levelU.setText(levelUV);
 
-        questionsA = (pointsUV/10) + answeredWrongUV;
+        questionsA = (int) Math.floor(answeredWrongUV*100);
         answeredQuestions.setText(String.valueOf(questionsA));
 
         mProgress = (ProgressBar) view.findViewById(R.id.progressBarU);
@@ -74,19 +81,13 @@ public class FragmentUserDetails extends Fragment {
 
         ImageView btn;
         TextView txtV;
-        for(int i=1; i<=userScore.getLevel_id(); i++){
-            if(pointsUV>= i*50) {
+        for(int i=1; i<=userScore.getConteudo().getNivel().getOrdem(); i++){
                 if(i==1) {
                     txtV = (TextView) view.findViewById(R.id.txvElements);
                     txtV.setVisibility(View.VISIBLE);
                 }
-                if(i==9) {
-                    txtV = (TextView) view.findViewById(R.id.txvchallenges);
-                    txtV.setVisibility(View.VISIBLE);
-                }
                 btn = (ImageView) view.findViewById(getResources().getIdentifier("imageView" + String.valueOf(i), "id", getActivity().getPackageName()));
                 btn.setVisibility(View.VISIBLE);
-            }
         }
 
         return view;

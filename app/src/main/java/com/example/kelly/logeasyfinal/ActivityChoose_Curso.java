@@ -3,11 +3,16 @@ package com.example.kelly.logeasyfinal;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+
+import com.example.kelly.logeasyfinal.persistencia.MySQLiteHelper;
+import com.example.kelly.logeasyfinal.modelo.Curso;
+import com.example.kelly.logeasyfinal.modelo.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +23,8 @@ public class ActivityChoose_Curso extends Activity {
     private GridView grid;
     private List<String> web = new ArrayList<String>();
     private List<Integer> imageId = new ArrayList<Integer>();
-    private List<ClassCurso> cursos;
-    private ClassUser user;
+    private List<Curso> cursos;
+    private User user;
 
     public void addContentGrid(){
         MySQLiteHelper db = new MySQLiteHelper(this);
@@ -29,7 +34,7 @@ public class ActivityChoose_Curso extends Activity {
             for (int i = 0; i < cursos.size(); i++) {
 
                 imageId.add(i, R.drawable.level1s);
-                web.add(i, cursos.get(i).getCursoname());
+                web.add(i, cursos.get(i).getNome());
             }
         }
 
@@ -65,7 +70,7 @@ public class ActivityChoose_Curso extends Activity {
                 Intent intent = new Intent(ActivityChoose_Curso.this, ActivityLevels.class);
                 intent.putExtra("chosenUser", user);
                 intent.putExtra("toast", i);
-                intent.putExtra("chosenCurso", cursos.get(position));
+                intent.putExtra("chosenCurso", (Parcelable) cursos.get(position));
                 //intent.putExtra(users.get(position).getUsername(), users.get(position).getAvatar());//now I have to get the data in log in
                 startActivity(intent);
                 finish();

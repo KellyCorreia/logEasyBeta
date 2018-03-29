@@ -3,11 +3,17 @@ package com.example.kelly.logeasyfinal;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+
+import com.example.kelly.logeasyfinal.modelo.Aluno;
+import com.example.kelly.logeasyfinal.modelo.Avatar;
+import com.example.kelly.logeasyfinal.persistencia.MySQLiteHelper;
+import com.example.kelly.logeasyfinal.modelo.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,26 +24,23 @@ public class ActivityChoose_Player extends Activity {
     private GridView grid;
     private List<String> web = new ArrayList<String>();
     private List<Integer> imageId = new ArrayList<Integer>();
-    private List<ClassUser> users;
+    private List<Aluno> alunos;
 
     public void addContentGrid(){
+
         MySQLiteHelper db = new MySQLiteHelper(this);
-        users = db.getAllUsers();
-        if(users.size()!=0) {
+        alunos = db.getAllAlunos();
+        if(alunos.size()!=0) {
 
             String imageAvatar;
-            for (int i = 0; i < users.size(); i++) {
-                imageAvatar = users.get(i).getAvatar();
-                if (imageAvatar.equals("Avatar1")) {
-                    imageId.add(i, R.drawable.avatar1);
-                } else if (imageAvatar.equals("Avatar2")) {
-                    imageId.add(i, R.drawable.avatar2);
-                } else if (imageAvatar.equals("Avatar3")) {
-                    imageId.add(i, R.drawable.avatar3);
-                } else if (imageAvatar.equals("Avatar4")) {
-                    imageId.add(i, R.drawable.avatar4);
-                }
-                web.add(i, users.get(i).getUsername());
+
+            for (int i = 0; i < alunos.size(); i++) {
+                imageAvatar = alunos.get(i).getAvatar().getNome();
+                int identifier = getResources().getIdentifier(imageAvatar, "drawable", "package.name");
+                // imageId.add(i, R.drawable.avatar1);, foi trocado por:
+                imageId.add(i, identifier);
+
+                web.add(i, alunos.get(i).getUsuario().getUsername());
             }
         }
 
@@ -66,7 +69,7 @@ public class ActivityChoose_Player extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Toast.makeText(ActivityChoose_Player.this, "Voce clicou em " + web.get(position), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(ActivityChoose_Player.this, ActivityLogin.class);
-                intent.putExtra("chosenUser", users.get(position));
+                intent.putExtra("chosenUser", (Parcelable) alunos.get(position));
                 //intent.putExtra(users.get(position).getUsername(), users.get(position).getAvatar());//now I have to get the data in log in
                 startActivity(intent);
                 finish();
@@ -82,7 +85,7 @@ public class ActivityChoose_Player extends Activity {
                 finish();
             }
         });
-        if(users.isEmpty()){
+        if(alunos.isEmpty()){
             grid.setVisibility(View.INVISIBLE);
             LinearLayout layoutBackground =(LinearLayout)findViewById(R.id.layoutGrid);
             layoutBackground.setBackgroundResource(R.drawable.nouser);

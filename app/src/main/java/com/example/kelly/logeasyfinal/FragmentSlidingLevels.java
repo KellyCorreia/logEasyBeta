@@ -2,6 +2,7 @@ package com.example.kelly.logeasyfinal;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -12,12 +13,20 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.example.kelly.logeasyfinal.modelo.Aluno;
+import com.example.kelly.logeasyfinal.modelo.Curso;
+import com.example.kelly.logeasyfinal.modelo.CursoAluno;
+import com.example.kelly.logeasyfinal.persistencia.MySQLiteHelper;
+import com.example.kelly.logeasyfinal.modelo.Conteudo;
+import com.example.kelly.logeasyfinal.modelo.User;
+
 public class FragmentSlidingLevels extends Fragment {
     private ViewPager mViewPager;
-    private ClassScoreboard userScore;
-    private ClassLevel chosenLevel;
+    private CursoAluno userScore;
+    private Conteudo chosenLevel;
     private int pointsU;
-    private ClassUser user;
+    private Aluno aluno;
+    private Curso curso;
 
     MySQLiteHelper db;
     Intent intent = new Intent();
@@ -25,12 +34,12 @@ public class FragmentSlidingLevels extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        user = (ClassUser) getArguments().getParcelable("chosenUser");
+        aluno = (Aluno) getArguments().getParcelable("chosenUser");
 
         db = new MySQLiteHelper(getActivity());
 
-        userScore = db.getScore(user.getUser_id());
-        pointsU = userScore.getPoints();
+        userScore = db.getCursoAluno(aluno.getId());
+        pointsU = userScore.getPontuacao();
 
         // acha o layout da onde vem a page
         return inflater.inflate(R.layout.fragment_base, container, false);
@@ -82,15 +91,18 @@ public class FragmentSlidingLevels extends Fragment {
     }
 
     public void setIntent(int a) {
-        chosenLevel = db.getLevel(a);
-        if (pointsU>=((chosenLevel.getLevel_id()-1)*50)){
+
+        if (pointsU>=(chosenLevel.getNivel().getQtdPontosFinal())){
             intent = new Intent(getActivity(), ActivityQuiz.class);
         } else {
             intent = new Intent(getActivity(), ActivityLesson.class);
         }
-        intent.putExtra("chosenUser", user);
-        intent.putExtra("chosenLevel", chosenLevel);
-        intent.putExtra("userScore", userScore);
+
+        chosenLevel = userScore.getConteudo();
+
+        intent.putExtra("chosenUser", (Parcelable) aluno);
+        intent.putExtra("chosenLevel", (Parcelable) chosenLevel);
+        intent.putExtra("userScore", (Parcelable) userScore);
         startActivity(intent);
     }
 
@@ -98,21 +110,21 @@ public class FragmentSlidingLevels extends Fragment {
         ImageButton btn;
         RelativeLayout layout = (RelativeLayout) vw.findViewById(R.id.boardLevel);
 
-        for(int i=0;i<10;i++){
+        for(int i=0;i<5;i++){
             btn = (ImageButton) vw.findViewById(getResources().getIdentifier("imbLevel"+String.valueOf(i+1),"id", getActivity().getPackageName()));
             btn.setOnClickListener(new viewT(i));
         }
 
-        for(int i=10;i>userScore.getLevel_id();i--){
+        for(int i=5;i>userScore.getConteudo().getNivel().getOrdem();i--){
             btn = (ImageButton) vw.findViewById(getResources().getIdentifier("imbLevel"+String.valueOf(i),"id", getActivity().getPackageName()));
             btn.setImageResource(getResources().getIdentifier("level" + String.valueOf(i) + "d", "drawable", getActivity().getPackageName()));
         }
 
-        for(int i=1; i<=5; i++){
+        for(int i=1; i<=3; i++){
             btn = (ImageButton) vw.findViewById(getResources().getIdentifier("imbLevel"+String.valueOf(i),"id", getActivity().getPackageName()));
             btn.setVisibility(part1);
         }
-        for(int i=6; i<=10; i++){
+        for(int i=4; i<=5; i++){
             btn = (ImageButton) vw.findViewById(getResources().getIdentifier("imbLevel"+String.valueOf(i),"id", getActivity().getPackageName()));
             btn.setVisibility(part2);
         }
@@ -121,7 +133,7 @@ public class FragmentSlidingLevels extends Fragment {
     }
 
     public void setToast() {
-        Toast.makeText(getActivity(), "Sorry, but you don't have enough points to access this level!  Answer more question in the levels before!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "Desculpe, mas você não tem pontos suficientes para acessar este nível!", Toast.LENGTH_SHORT).show();
     }
 
     class viewT implements View.OnClickListener {
@@ -133,9 +145,9 @@ public class FragmentSlidingLevels extends Fragment {
 
         @Override
         public void onClick(View v) {
-            if (pointsU >= (i*50)) {
+            if (pointsU >= userScore.getConteudo().getNivel().getQtdPontosFinal()) {
                 //if (i < 2) {
-                    setIntent(i + 1);
+                    setIntent(userScore.getConteudo().getNivel().getOrdem() + 1);
                 //}
                 //else{
                 //    setToast();

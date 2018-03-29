@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    tools:context="com.example.kelly.logeasysummerresearch.LogEasy"
+    tools:context="com.example.kelly.logeasyfinal.ActivityLogEasy"
     android:id="@+id/LayoutBase"
     android:background="#ffffe490"
     android:padding="15dp">

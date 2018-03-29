@@ -3,6 +3,7 @@ package com.example.kelly.logeasyfinal;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
@@ -11,6 +12,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.example.kelly.logeasyfinal.modelo.Aluno;
+import com.example.kelly.logeasyfinal.modelo.Conteudo;
+import com.example.kelly.logeasyfinal.modelo.Curso;
+import com.example.kelly.logeasyfinal.modelo.CursoAluno;
+
 import java.util.Random;
 
 public class ActivityLesson extends FragmentActivity {
@@ -19,12 +26,14 @@ public class ActivityLesson extends FragmentActivity {
     ImageButton btnPlay, btnLevels;
     RelativeLayout layout;
     LinearLayout firstLayout;
-    ClassLevel selecLevel;
+    Conteudo selecLevel;
     ImageView ImgAvatar;
     Random rd = new Random();
 
-    ClassUser User;
-    ClassScoreboard Score;
+    Aluno aluno;
+    Curso curso;
+
+    CursoAluno score;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +41,10 @@ public class ActivityLesson extends FragmentActivity {
         setContentView(R.layout.activity_lesson);
 
         Bundle extras = getIntent().getExtras();
-        User = extras.getParcelable("chosenUser");
+        aluno = extras.getParcelable("chosenUser");
+        curso = extras.getParcelable("chosenCurso");
         selecLevel = extras.getParcelable("chosenLevel");
-        Score = extras.getParcelable("userScore");
+        score = extras.getParcelable("userScore");
 
         txtPoints = (TextView)findViewById(R.id.txtPoints);
         btnPlay = (ImageButton)findViewById(R.id.btnPlay);
@@ -51,8 +61,9 @@ public class ActivityLesson extends FragmentActivity {
             public void onClick(View v) {
                 if(getCallingActivity() == null) {
                     Intent intent = new Intent(ActivityLesson.this, ActivityQuiz.class);
-                    intent.putExtra("chosenUser", User);
-                    intent.putExtra("chosenLevel", selecLevel);
+                    intent.putExtra("chosenUser", (Parcelable) aluno);
+                    intent.putExtra("chosenCurso", (Parcelable) curso);
+                    intent.putExtra("chosenLevel", (Parcelable) selecLevel);
                     startActivity(intent);
                     finish();
                 }else{
@@ -78,12 +89,12 @@ public class ActivityLesson extends FragmentActivity {
     }
 
     private void setLesson(){ //Method to take the lesson from the Level Class and from the User Class
-        txtPoints.setText(Integer.toString(Score.getPoints()));
+        txtPoints.setText(Integer.toString(score.getPontuacao()));
 
         firstLayout.setBackgroundColor(Color.parseColor("#FF192030"));
 
 
-        switch (User.getAvatar()) {
+        switch (aluno.getAvatar().getNome()) {
             case "Avatar1":
                 int random = rd.nextInt(4);
                 if (random == 0)
@@ -153,7 +164,7 @@ public class ActivityLesson extends FragmentActivity {
                 break;
         }
 
-        switch(selecLevel.getLevel_id()){
+        switch(selecLevel.getNivel().getOrdem()){
             case 1:
                 layout.setBackgroundResource(R.drawable.backgroundlevel1);
                 btnPlay.setBackgroundResource(R.drawable.buttomlevel);
@@ -178,31 +189,6 @@ public class ActivityLesson extends FragmentActivity {
                 layout.setBackgroundResource(R.drawable.backgroundlevel5);
                 btnPlay.setBackgroundResource(R.drawable.buttomlevel5);
                 btnLevels.setBackgroundResource(R.drawable.buttomhin5);
-                break;
-            case 6:
-                layout.setBackgroundResource(R.drawable.backgroundlevel6);
-                btnPlay.setBackgroundResource(R.drawable.buttomlevel6);
-                btnLevels.setBackgroundResource(R.drawable.buttomhin6);
-                break;
-            case 7:
-                layout.setBackgroundResource(R.drawable.backgroundlevel7);
-                btnPlay.setBackgroundResource(R.drawable.buttomlevel7);
-                btnLevels.setBackgroundResource(R.drawable.buttomhin7);
-                break;
-            case 8:
-                layout.setBackgroundResource(R.drawable.backgroundlevel8);
-                btnPlay.setBackgroundResource(R.drawable.buttomlevel8);
-                btnLevels.setBackgroundResource(R.drawable.buttomhin8);
-                break;
-            case 9:
-                layout.setBackgroundResource(R.drawable.backgroundlevel9);
-                btnPlay.setBackgroundResource(R.drawable.buttomlevel9);
-                btnLevels.setBackgroundResource(R.drawable.buttomhin9);
-                break;
-            case 10:
-                layout.setBackgroundResource(R.drawable.backgroundlevel10);
-                btnPlay.setBackgroundResource(R.drawable.buttomlevel10);
-                btnLevels.setBackgroundResource(R.drawable.buttomhin10);
                 break;
         }
     }

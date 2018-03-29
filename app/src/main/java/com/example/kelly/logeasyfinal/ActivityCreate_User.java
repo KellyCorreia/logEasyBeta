@@ -3,11 +3,17 @@ package com.example.kelly.logeasyfinal;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+
+import com.example.kelly.logeasyfinal.modelo.Aluno;
+import com.example.kelly.logeasyfinal.modelo.Avatar;
+import com.example.kelly.logeasyfinal.persistencia.MySQLiteHelper;
+import com.example.kelly.logeasyfinal.modelo.User;
 
 import java.util.List;
 
@@ -18,7 +24,7 @@ public class ActivityCreate_User extends Activity {
     private String UserName;
     private String Email;
     private String Password;
-    private ClassUser NewUser;
+    private Aluno NewAluno;
     private MySQLiteHelper dbHelper;
     RadioButton rb1;
     RadioButton rb2;
@@ -65,17 +71,18 @@ public class ActivityCreate_User extends Activity {
            if (TextUtils.isEmpty(Password)) {
                txtpass.setError(getString(R.string.error_empty_field));
            }
+
        /* Code to avoid duplicated usernames or emails on the database.*/
        dbHelper = new MySQLiteHelper(this);
-       List<ClassUser> users;
-       users = dbHelper.getAllUsers();
+       List<Aluno> alunos;
+       alunos = dbHelper.getAllAlunos();
        boolean namefound = false, emailfound = false;
-       for(int i = 0; i < users.size();i++){
-           if (UserName.equals(users.get(0).getUsername())){
+       for(int i = 0; i < alunos.size();i++){
+           if (UserName.equals(alunos.get(0).getUsuario().getUsername())){
                namefound = true;
                txtname.setError(getString(R.string.error_duplicated_username));
            }
-           if (Email.equals(users.get(0).getEmail())){
+           if (Email.equals(alunos.get(0).getUsuario().getEmail())){
                emailfound = true;
                txtemail.setError(getString(R.string.error_duplicated_email));
            }
@@ -83,15 +90,18 @@ public class ActivityCreate_User extends Activity {
 
        if((!TextUtils.isEmpty(UserName)) && (!TextUtils.isEmpty(Email)) && (!TextUtils.isEmpty(Password)) && (namefound == false) && (emailfound == false)) {
            //Toast.makeText(ActivityCreate_User.this, AvatarSelected + " , " + UserName + " , " + Email + " , " + Password, Toast.LENGTH_SHORT).show();
-           NewUser = new ClassUser(UserName, Email, Password, AvatarSelected);
+           Avatar avatar = dbHelper.getAvatarByName(AvatarSelected);
+           User user = new User(UserName, Email, Password);
+
+           NewAluno = new Aluno(UserName, UserName, user, avatar);
            dbHelper = new MySQLiteHelper(this);
 
-           long userID = dbHelper.addUser(NewUser);
-           NewUser.setUser_id(userID);
+           Integer alunoID = dbHelper.addAluno(NewAluno);
+           NewAluno.setId(alunoID);
 
-           if (userID!=0) {
+           if (alunoID!=0) {
                Intent intent = new Intent(ActivityCreate_User.this, ActivityLogin.class);
-               intent.putExtra("chosenUser", NewUser);
+               intent.putExtra("chosenUser", (Parcelable) NewAluno);
                startActivity(intent);
                finish();
            }

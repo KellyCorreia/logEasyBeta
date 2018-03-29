@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.kelly.logeasyfinal.R;
+
 
 public class ActivityInfo extends Activity {
 

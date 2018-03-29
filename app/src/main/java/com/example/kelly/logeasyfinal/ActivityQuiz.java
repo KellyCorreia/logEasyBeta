@@ -3,6 +3,7 @@ package com.example.kelly.logeasyfinal;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -11,29 +12,42 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kelly.logeasyfinal.modelo.AlternativaAluno;
+import com.example.kelly.logeasyfinal.modelo.Aluno;
+import com.example.kelly.logeasyfinal.modelo.Curso;
+import com.example.kelly.logeasyfinal.modelo.CursoAluno;
+import com.example.kelly.logeasyfinal.persistencia.MySQLiteHelper;
+import com.example.kelly.logeasyfinal.modelo.Alternativa;
+import com.example.kelly.logeasyfinal.modelo.Conteudo;
+import com.example.kelly.logeasyfinal.modelo.Questao;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class ActivityQuiz extends Activity {
 
-    List<ClassQuestion> qList = new ArrayList<>();
-    List<ClassAnswer> aList = new ArrayList<>();
+    List<Questao> qList = new ArrayList<>();
+    List<Alternativa> aList = new ArrayList<>();
 
     TextView txtQuest, txtPoints;
     RadioGroup grp;
     RadioButton rda, rdb, rdc;
+    Alternativa alta, altb, altc;
+    Questao questao;
     Button butNext, btnLesson, btnHint,btnLevelsQ;
     RelativeLayout layout;
     RadioButton rightAnswer,userAnswer;
-    ClassScoreboard Score;
+    CursoAluno scoreAluno;
 
-    ClassUser User;
-    ClassLevel selecLevel;
+    Aluno aluno;
+    Conteudo selecLevel;
     Intent intent = new Intent();
     MySQLiteHelper db;
 
-    int score, wScore;
+    int score;
+    AlternativaAluno alternativaAluno;
+    Double wScore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,13 +57,13 @@ public class ActivityQuiz extends Activity {
         db = new MySQLiteHelper(this);
 
         Bundle extras = getIntent().getExtras();
-        User = extras.getParcelable("chosenUser");
+        aluno = extras.getParcelable("chosenUser");
         selecLevel = extras.getParcelable("chosenLevel");
 
-        Score = db.getScore(User.getUser_id());
+        scoreAluno = db.getCursoAluno(aluno.getId(), selecLevel.getCurso().getId());
 
-        score = Score.getPoints();
-        wScore = Score.getWrong_number();
+        score = scoreAluno.getPontuacao();
+        wScore = scoreAluno.getPercentualErro();
 
         txtPoints = (TextView)findViewById(R.id.txtPoints);
         txtQuest =(TextView)findViewById(R.id.txtQuestion);
@@ -72,26 +86,31 @@ public class ActivityQuiz extends Activity {
 
                     userAnswer = (RadioButton) findViewById(grp.getCheckedRadioButtonId());
 
-                    if (userAnswer == rightAnswer) {
-                        Toast.makeText(ActivityQuiz.this, "Right Answer!", Toast.LENGTH_SHORT).show();
-
-                        if (selecLevel.getLevel_id()*50 > Score.getPoints()) {
-                            score += 10;
-                            setScoreBoard();
-                        }
-                        else{
-                            setQuestionView();
-                        }
-                    }else {
-                        Toast.makeText(ActivityQuiz.this, "Wrong answer!", Toast.LENGTH_SHORT).show();
-                        setQuestionView();
-                        wScore += 1;
-                        db.updatingWrongScore(wScore,User);
+                    if (rda.isChecked()){
+                        alternativaAluno = new AlternativaAluno(alta, aluno);
+                    }else if(rdb.isChecked()){
+                        alternativaAluno = new AlternativaAluno(altb, aluno);
+                    }else if(rdc.isChecked()){
+                        alternativaAluno = new AlternativaAluno(altc, aluno);
                     }
+
+                    if (userAnswer == rightAnswer) {
+                        Toast.makeText(ActivityQuiz.this, "Você Acertou!", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(ActivityQuiz.this, "Você errou!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    if (selecLevel.getNivel().getQtdPontosFinal() > scoreAluno.getPontuacao()) {
+                        setScoreBoard();
+                    }
+                    else{
+                        setQuestionView();
+                    }
+
                     grp.clearCheck();
 
                 }else{
-                    Toast.makeText(ActivityQuiz.this, "Select one option!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ActivityQuiz.this, "Selecione uma alternativa!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -100,9 +119,9 @@ public class ActivityQuiz extends Activity {
             @Override
             public void onClick(View v) {
                 intent.setClass(ActivityQuiz.this, ActivityHint.class);
-                intent.putExtra("chosenUser", User);
-                intent.putExtra("chosenLevel", selecLevel);
-                intent.putExtra("userScore", Score);
+                intent.putExtra("chosenUser", (Parcelable) aluno);
+                intent.putExtra("chosenLevel", (Parcelable) selecLevel);
+                intent.putExtra("userScore", (Parcelable) scoreAluno);
                 startActivity(intent);
             }
         });
@@ -111,9 +130,9 @@ public class ActivityQuiz extends Activity {
             @Override
             public void onClick(View v) {
                 intent.setClass(ActivityQuiz.this, ActivityLesson.class);
-                intent.putExtra("chosenUser", User);
-                intent.putExtra("chosenLevel", selecLevel);
-                intent.putExtra("userScore", Score);
+                intent.putExtra("chosenUser", (Parcelable) aluno);
+                intent.putExtra("chosenLevel", (Parcelable) selecLevel);
+                intent.putExtra("userScore", (Parcelable) scoreAluno);
                 startActivityForResult(intent,0);
             }
         });
@@ -129,33 +148,37 @@ public class ActivityQuiz extends Activity {
     private void setQuestionView(){
 
         if(qList.size() == 0) {
-            qList = db.levelQuestion(selecLevel.getLevel_id());
+            qList = db.questoesConteudo(selecLevel);
         }
 
         rdc.setVisibility(View.GONE);
 
-        aList = db.getAnswer(qList.get(0).getQuestion_id());
+        aList = db.alternativasQuestao(qList.get(0));
         String backBaseName = "backgroundlevel";
-        layout.setBackgroundResource(getResources().getIdentifier(backBaseName + String.valueOf(selecLevel.getLevel_id()), "drawable", this.getPackageName()));
+        layout.setBackgroundResource(getResources().getIdentifier(backBaseName + String.valueOf(selecLevel.getNivel().getId()), "drawable", this.getPackageName()));
 
-        txtPoints.setText(Integer.toString(Score.getPoints()));
-        txtQuest.setText(qList.get(0).getQuestion_text());
+        txtPoints.setText(Integer.toString(scoreAluno.getPontuacao()));
+        txtQuest.setText(qList.get(0).getEnunciado());
+        questao = qList.get(0);
         int i= 0;
         while(i < aList.size()) {
             if(i == 0) {
-                rda.setText(aList.get(i).getAnswer_text());
+                rda.setText(aList.get(i).getTexto());
+                alta = aList.get(i);
             }else if(i == 1){
-                rdb.setText(aList.get(i).getAnswer_text());
+                rda.setText(aList.get(i).getTexto());
+                altb = aList.get(i);
             }else if(i == 2){
                 rdc.setVisibility(View.VISIBLE);
-                rdc.setText(aList.get(i).getAnswer_text());
+                rdc.setText(aList.get(i).getTexto());
+                altc = aList.get(i);
             }
             i++;
         }
-        if(aList.get(0).getAnswer_state() == 1) {
+        if(aList.get(0).isValor()) {
             rightAnswer = rda;
         }else {
-            if (aList.get(1).getAnswer_state() == 1) {
+            if (aList.get(1).isValor()) {
                 rightAnswer = rdb;
             } else {
                 rightAnswer = rdc;
@@ -163,9 +186,8 @@ public class ActivityQuiz extends Activity {
         }
         qList.remove(0);
 
-
-        score = Score.getPoints();
-        wScore = Score.getWrong_number();
+        score = scoreAluno.getPontuacao();
+        wScore = scoreAluno.getPercentualErro();
     }
     public void setAlertView(){
         RelativeLayout lay1, lay2;
@@ -188,30 +210,22 @@ public class ActivityQuiz extends Activity {
     private void setScoreBoard(){
 
         intent.setClass(ActivityQuiz.this, ActivityLesson.class);
+        CursoAluno scoreAtual = db.addPontuacao(alternativaAluno, selecLevel.getCurso());
+        score = scoreAtual.getPontuacao();
+        wScore = scoreAtual.getPercentualErro();
+        scoreAluno = scoreAtual;
 
-        if(score==(selecLevel.getLevel_id()*50)){
-            db.updatingScore(score, User, selecLevel.getLevel_id()+1);
-            selecLevel = db.getLevel(selecLevel.getLevel_id()+1);
-            Score = db.getScore(User.getUser_id());
-            intent.putExtra("chosenUser", User);
-            intent.putExtra("chosenLevel", selecLevel);
-            intent.putExtra("userScore", Score);
+        if(score>=selecLevel.getNivel().getQtdPontosFinal()){
 
-            if( selecLevel.getLevel_id()==9)
-                Toast.makeText(ActivityQuiz.this, "You defeated the "+selecLevel.getLevelname()+" !", Toast.LENGTH_SHORT).show();
-            else
-                Toast.makeText(ActivityQuiz.this, "Congratulations! You master the "+selecLevel.getLevelname()+" element!", Toast.LENGTH_SHORT).show();
-            //setAlertView();
+            Toast.makeText(ActivityQuiz.this, "Parabéns!! Você conseguiu "+ selecLevel.getNivel().getAmbiente().getObjetivo() +"!", Toast.LENGTH_SHORT).show();
+
+            selecLevel = scoreAtual.getConteudo();
+            intent.putExtra("chosenUser", (Parcelable) aluno);
+            intent.putExtra("chosenLevel", (Parcelable) selecLevel);
+            intent.putExtra("userScore", score);
+
             startActivity(intent);
             finish();
-        }else{
-            db.updatingScore(score, User, Score.getLevel_id());
-            if(score == 100){
-                Toast.makeText(ActivityQuiz.this, "You defeated the "+selecLevel.getLevelname()+" !", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-            Score = db.getScore(User.getUser_id());
-            setQuestionView();
         }
     }
 }
