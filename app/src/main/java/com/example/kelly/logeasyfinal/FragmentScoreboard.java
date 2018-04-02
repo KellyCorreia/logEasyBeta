@@ -38,9 +38,11 @@ public class FragmentScoreboard extends Fragment {
 
         dbHelper = new MySQLiteHelper(getActivity());
         cursoAlunoList = dbHelper.getAllCursoAlunos();
+        list = new ArrayList<ScoreboardScreen>();
 
         for (int i = 0; i < cursoAlunoList.size(); i++){
 
+            list.add(new ScoreboardScreen());
             list.get(i).setLevelName(cursoAlunoList.get(i).getConteudo().getNivel().getAmbiente().getElemento());
             list.get(i).setUserName(cursoAlunoList.get(i).getAluno().getNome());
             list.get(i).setPoints(cursoAlunoList.get(i).getPontuacao());

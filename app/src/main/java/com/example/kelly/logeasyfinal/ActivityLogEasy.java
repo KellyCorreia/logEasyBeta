@@ -2,9 +2,18 @@ package com.example.kelly.logeasyfinal;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+
+import com.example.kelly.logeasyfinal.modelo.Curso;
+
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.logging.Logger;
 
 public class ActivityLogEasy extends Activity {
     private Intent intent = new Intent();
@@ -36,6 +45,39 @@ public class ActivityLogEasy extends Activity {
                 startActivity(intent);
             }
         });
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        new HttpRequestTask().execute();
+    }
+
+    private class HttpRequestTask extends AsyncTask<Void, Void, Curso> {
+        @Override
+        protected Curso doInBackground(Void... params) {
+            try {
+                final String url = "http://10.0.0.4:8080/logeasy-webservice/curso/1/";
+                RestTemplate restTemplate = new RestTemplate();
+                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+                Curso curso = restTemplate.getForObject(url, Curso.class);
+                Log.i("curso", "CURSOOOO");
+                return curso;
+            } catch (Exception e) {
+                Log.i("errowebservice", e.getMessage());
+                System.out.print("ERRO NO WEBSERVICE: " + e.getMessage());
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Curso curso) {
+            Log.i("cursoname","CURSO==>" + curso.getId()+", "+ curso.getNome());
+            Log.i("conteudo","CONTEUDOS==>" + curso.getConteudos());
+            Log.i("disciplina","DISCIPLINA==>" + curso.getDisciplina());
+        }
 
     }
 }

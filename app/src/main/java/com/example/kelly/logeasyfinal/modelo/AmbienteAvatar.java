@@ -11,7 +11,12 @@ public class AmbienteAvatar extends AbstractDomainClass implements Serializable 
 
 	private Ambiente ambiente;
 
-	public AmbienteAvatar() {
+	public AmbienteAvatar(){
+
+	}
+
+	public AmbienteAvatar(Integer id){
+		this.id = id;
 	}
 
 	public String getFalaInicialNivel() {

@@ -19,10 +19,11 @@ import com.example.kelly.logeasyfinal.modelo.Disciplina;
 import com.example.kelly.logeasyfinal.modelo.Nivel;
 import com.example.kelly.logeasyfinal.modelo.Questao;
 import com.example.kelly.logeasyfinal.modelo.User;
-import com.example.kelly.logeasyfinal.ScoreboardScreen;
+import com.example.kelly.logeasyfinal.util.Propriedades;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_USER_PASS = "password";
     private static final String USERS_DATABASE_CREATE = "CREATE TABLE "
             + TABLE_USERS + "(" + COLUMN_USER_ID
-            + " integer primary key, " + COLUMN_USER_USERNAME
+            + " integer primary key AUTOINCREMENT, " + COLUMN_USER_USERNAME
             + " text not null, " + COLUMN_USER_EMAIL
             + " text not null, " + COLUMN_USER_PASS
             + " text not null);";
@@ -64,7 +65,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + " text not null, " + COLUMN_ALUNO_NOME
             + " text not null, " + COLUMN_AVATAR_ID
             + " integer not null, " + COLUMN_USER_ID
-            + " integer not null);";
+            + " integer);";
 
     //Declaration of Table Ambiente
     public static final String TABLE_AMBIENTE = "table_ambiente";
@@ -94,13 +95,15 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String TABLE_NIVEL = "table_nivel";
     public static final String COLUMN_NIVEL_ID = "n_id";
     public static final String COLUMN_NIVEL_ORDEM = "n_ordem";
+    public static final String COLUMN_NIVEL_DESCRICAO = "n_descricao";
     public static final String COLUMN_NIVEL_PTS_DEFAULT = "n_pts_quest_default";
     public static final String COLUMN_NIVEL_PTS_MIN = "n_pts_minimo";
     public static final String COLUMN_NIVEL_PTS_MAX = "n_pts_maximo";
     private static final String NIVEL_DATABASE_CREATE = "CREATE TABLE "
             + TABLE_NIVEL + "(" + COLUMN_NIVEL_ID
             + " integer primary key, " + COLUMN_NIVEL_ORDEM
-            + " integer not null, " + COLUMN_NIVEL_PTS_DEFAULT
+            + " integer not null, " + COLUMN_NIVEL_DESCRICAO
+            + " text, " + COLUMN_NIVEL_PTS_DEFAULT
             + " integer, " + COLUMN_NIVEL_PTS_MIN
             + " integer not null, " + COLUMN_NIVEL_PTS_MAX
             + " integer not null, " + COLUMN_AMBIENTE_ID
@@ -132,6 +135,19 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + " text not null, " + COLUMN_CURSO_DESCRICAO
             + " text, " + COLUMN_DISCIPLINA_ID
             + " integer not null);";
+
+    //Tabela de cursos em pré-seleção
+    public static final String TABLE_CURSO_PRE = "table_curso_pre";
+    public static final String COLUMN_CURSO_ID_PRE = "c_id_pre";
+    public static final String COLUMN_CURSO_CODIGO_PRE = "c_codigo_pre";
+    public static final String COLUMN_CURSO_NAME_PRE = "c_name_pre";
+    public static final String COLUMN_CURSO_DESCRICAO_PRE = "c_descricao_pre";
+    private static final String CURSO_DATABASE_CREATE_PRE = "CREATE TABLE "
+            + TABLE_CURSO_PRE + "(" + COLUMN_CURSO_ID_PRE
+            + " integer primary key, " + COLUMN_CURSO_CODIGO_PRE
+            + " text not null, " + COLUMN_CURSO_NAME_PRE
+            + " text not null, " + COLUMN_CURSO_DESCRICAO_PRE
+            + " text);";
 
     //Declaration of Table CONTEUDO
     public static final String TABLE_CONTEUDO = "table_conteudo";
@@ -182,21 +198,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + " integer not null, " + COLUMN_ALUNO_ID
             + " integer not null);";
 
-    //Declaration of Table CURSO_ALUNO
-    public static final String TABLE_CURSO_ALUNO = "table_curso_aluno";
-    public static final String COLUMN_CURSO_ALUNO_ID = "c_a_id";
-    public static final String COLUMN_CURSO_ALUNO_PTS = "c_a_pontuacao";
-    public static final String COLUMN_CURSO_ALUNO_ERRO = "c_a_percent_erro";
-    private static final String CURSO_ALUNO_DATABASE_CREATE = "CREATE TABLE "
-            + TABLE_CURSO_ALUNO + "(" + COLUMN_CURSO_ALUNO_ID
-            + " integer primary key, " + COLUMN_CURSO_ALUNO_PTS
-            + " integer not null, " + COLUMN_CURSO_ALUNO_ERRO
-            + " real not null, " + COLUMN_CURSO_ID
-            + " integer not null, " + COLUMN_ALUNO_ID
-            + " integer not null, " + COLUMN_CONTEUDO_ID
-            + " integer not null);";
-
-    private static final String DATABASE_NAME = "LogEasyBeta.db";
+    private static final String DATABASE_NAME = Propriedades.getNomeBancoSQLite();
     private static final int DATABASE_VERSION = 2;
     //OR:     private SQLiteDatabase dbase;
 
@@ -222,21 +224,19 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         db.execSQL(QUESTAO_DATABASE_CREATE);
         db.execSQL(ALTERNATIVA_DATABASE_CREATE);
         db.execSQL(ALTERNATIVA_ALUNO_DATABASE_CREATE);
-        db.execSQL(CURSO_ALUNO_DATABASE_CREATE);
+        db.execSQL(CURSO_DATABASE_CREATE_PRE);
 
         InsertValues data = new InsertValues(this);
-        data.insertAllValues();
+        data.insertAllTabelasFixas();
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldV, int newV) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_QUESTAO);
-        onCreate(db);
+        //onCreate(db);
     }
 
     /*
      All methods to add values to the database.
-
                                                */
 
     public void addAvatar(Avatar av) {
@@ -276,6 +276,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_NIVEL_ID, n.getId());
         values.put(COLUMN_NIVEL_ORDEM, n.getOrdem());
+        values.put(COLUMN_NIVEL_DESCRICAO, n.getDescricao());
         values.put(COLUMN_NIVEL_PTS_DEFAULT, n.getPontosQuestaoDefault());
         values.put(COLUMN_NIVEL_PTS_MIN, n.getQtdPontosInicial());
         values.put(COLUMN_NIVEL_PTS_MAX, n.getQtdPontosFinal());
@@ -285,27 +286,65 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     }
 
     //Add user tornou-se add Aluno
-    public Integer addAluno(Aluno aluno) {
+    public Aluno addAluno(Aluno aluno) {
         Integer idAluno = 0;
-        Integer idUser = 0;
+        Aluno alunoNew = aluno;
+        User user = aluno.getUsuario();
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_USER_ID, aluno.getUsuario().getId());
         values.put(COLUMN_USER_USERNAME, aluno.getUsuario().getUsername());
         values.put(COLUMN_USER_EMAIL, aluno.getUsuario().getEmail());
         values.put(COLUMN_USER_PASS, aluno.getUsuario().getPassword());
 
-        database.insert(TABLE_USERS,null, values);
+         user.setId((int) database.insert(TABLE_USERS,null, values));
+
+        if (aluno.getId() == null){
+            idAluno = this.getProximoIdAluno();
+        }else {
+            idAluno = aluno.getId();
+        }
 
         ContentValues values2 = new ContentValues();
+        values2.put(COLUMN_ALUNO_ID, idAluno);
         values2.put(COLUMN_ALUNO_CODIGO, aluno.getCodigo());
         values2.put(COLUMN_ALUNO_NOME, aluno.getNome());
         values2.put(COLUMN_AVATAR_ID, aluno.getAvatar().getId());
-        values2.put(COLUMN_USER_ID, aluno.getUsuario().getId());
+        values2.put(COLUMN_USER_ID, user.getId());
 
-        idAluno = (int) database.insert(TABLE_ALUNO,null, values2);
+        alunoNew.setId((int) database.insert(TABLE_ALUNO,null, values2));
+        alunoNew.setUsuario(user);
 
-        return idAluno;
+        return alunoNew;
+    }
+
+    //Add Aluno para scoreBoard, esses alunos não são mostrados no login
+    public void addAlunoSemUser(Aluno aluno) {
+
+        database = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_ALUNO_ID, aluno.getId());
+        values.put(COLUMN_ALUNO_CODIGO, aluno.getCodigo());
+        values.put(COLUMN_ALUNO_NOME, aluno.getNome());
+        values.put(COLUMN_AVATAR_ID, aluno.getAvatar().getId());
+
+        database.insert(TABLE_ALUNO,null, values);
+
+        return;
+    }
+
+    private Integer getProximoIdAluno() {
+        Integer proxId = 0;
+
+        String selectQuery = "SELECT MAX("+COLUMN_ALUNO_ID+") FROM " + TABLE_ALUNO + " ; ";
+        database = this.getReadableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            proxId = cursor.getInt(0)+1;
+        }
+
+        return proxId;
     }
 
     public void addDisciplina(Disciplina d) {
@@ -329,6 +368,17 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         values.put(COLUMN_DISCIPLINA_ID, c.getDisciplina().getId());
 
         database.insert(TABLE_CURSO, null, values);
+    }
+
+    public void addCursoPreSelecao(Curso c) {
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_CURSO_ID_PRE, c.getId());
+        values.put(COLUMN_CURSO_CODIGO_PRE, c.getCodigo());
+        values.put(COLUMN_CURSO_NAME_PRE, c.getNome());
+        values.put(COLUMN_CURSO_DESCRICAO_PRE, c.getDescricao());
+
+        database.insert(TABLE_CURSO_PRE, null, values);
     }
 
     public void addConteudo(Conteudo c) {
@@ -368,37 +418,25 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     public void addAlternativaAluno(AlternativaAluno a) {
         Cursor cursor;
+        Integer proxId = 0;
 
-        String selectQuery = "SELECT count(0) FROM " + TABLE_ALTERNATIVA_ALUNO + " WHERE " + COLUMN_ALTERNATIVA_ID + " = '" + a.getAlternativa().getId() + " and " + COLUMN_ALUNO_ID + " = '" + a.getAluno().getId() + "' ; ";
+        String selectQuery = "SELECT MAX("+COLUMN_ALTERNATIVA_ALUNO_ID+") FROM " + TABLE_ALTERNATIVA_ALUNO + " ; ";
         database = this.getReadableDatabase();
         cursor = database.rawQuery(selectQuery, null);
 
         if (cursor.moveToFirst()) {
-            if (cursor.getInt(0) == 0){
-                ContentValues values = new ContentValues();
-                values.put(COLUMN_ALTERNATIVA_ALUNO_ID, a.getId());
-                values.put(COLUMN_ALTERNATIVA_ID, a.getAlternativa().getId());
-                values.put(COLUMN_ALUNO_ID, a.getAluno().getId());
-
-                database = this.getWritableDatabase();
-                database.insert(TABLE_ALTERNATIVA_ALUNO, null, values);
-            }
+           proxId = cursor.getInt(0) + 1;
         }
-    }
-
-    public void addCursoAluno(CursoAluno c) {
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_CURSO_ALUNO_ID, c.getId());
-        values.put(COLUMN_CURSO_ALUNO_PTS, c.getPontuacao());
-        values.put(COLUMN_CURSO_ALUNO_ERRO, c.getPercentualErro());
-        values.put(COLUMN_CURSO_ID, c.getCurso().getId());
-        values.put(COLUMN_ALUNO_ID, c.getAluno().getId());
-        values.put(COLUMN_CONTEUDO_ID, c.getConteudo().getId());
+        values.put(COLUMN_ALTERNATIVA_ALUNO_ID, proxId);
+        values.put(COLUMN_ALTERNATIVA_ID, a.getAlternativa().getId());
+        values.put(COLUMN_ALUNO_ID, a.getAluno().getId());
 
-        database.insert(TABLE_CURSO_ALUNO, null, values);
+        database = this.getWritableDatabase();
+
+        database.insert(TABLE_ALTERNATIVA_ALUNO, null, values);
     }
-
 
     /*
        All methods to recovery information from the database.
@@ -469,7 +507,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public Avatar getAvatarByName(String nome) {
         Avatar avatar  = new Avatar();
 
-        String selectQuery = "SELECT * FROM " + TABLE_AVATAR + " WHERE " + COLUMN_AVATAR_NOME + " = '" + nome + "' ; ";
+        String selectQuery = "SELECT * FROM " + TABLE_AVATAR + " WHERE " + COLUMN_AVATAR_NOME + " like '%" + nome + "%' ; ";
         database = this.getReadableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
 
@@ -483,7 +521,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     }
 
 
-    public User getUser(Integer idUser) {
+    private User getUser(Integer idUser) {
         User user  = new User();
 
         String selectQuery = "SELECT * FROM " + TABLE_USERS + " WHERE " + COLUMN_USER_ID + " = '" + idUser + "' ; ";
@@ -503,7 +541,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public Disciplina getDisciplina(Integer idDisciplina) {
         Disciplina dis  = new Disciplina();
 
-        String selectQuery = "SELECT * FROM " + TABLE_DISCIPLINA + " WHERE " + COLUMN_DISCIPLINA_ID + " = '" + idDisciplina + "' ; ";
+        String selectQuery = "SELECT * FROM " + TABLE_DISCIPLINA + " WHERE " + COLUMN_DISCIPLINA_ID + " = " + idDisciplina + " ; ";
         database = this.getReadableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
 
@@ -511,10 +549,30 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             dis.setId(cursor.getInt(0));
             dis.setCodigo(cursor.getString(2));
             dis.setNome(cursor.getString(3));
-            dis.setDescricao(cursor.getString(4));
         }
 
         return dis;
+    }
+
+    public List<Aluno> getAllAlunosUsuarios() {
+        List<Aluno> alunosList = new ArrayList<>();
+        String selectQuery = "SELECT * FROM " + TABLE_ALUNO + " WHERE " + COLUMN_USER_ID + " is not null;";
+        database = this.getReadableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Aluno a = new Aluno();
+                a.setId(cursor.getInt(0));
+                a.setCodigo(cursor.getString(1));
+                a.setNome(cursor.getString(2));
+                a.setAvatar(this.getAvatar(cursor.getInt(3)));
+                a.setUsuario(this.getUser(cursor.getInt(4)));
+
+                alunosList.add(a);
+
+            } while (cursor.moveToNext());
+        }
+        return alunosList;
     }
 
     public List<Aluno> getAllAlunos() {
@@ -556,7 +614,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public List<Curso> getAllCursos() {
         List<Curso> cursosList = new ArrayList<Curso>();
         String selectQuery = "SELECT * FROM " + TABLE_CURSO + ";";
-
         database = this.getReadableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
 
@@ -568,6 +625,26 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                 curso.setNome(cursor.getString(2));
                 curso.setDescricao(cursor.getString(3));
                 curso.setDisciplina(this.getDisciplina(cursor.getInt(4)));
+
+                cursosList.add(curso);
+            } while (cursor.moveToNext());
+        }
+        return cursosList;
+    }
+
+    public List<Curso> getAllCursosPreSelecao() {
+        List<Curso> cursosList = new ArrayList<Curso>();
+        String selectQuery = "SELECT * FROM " + TABLE_CURSO_PRE + ";";
+        database = this.getReadableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Curso curso = new Curso();
+                curso.setId(cursor.getInt(0));
+                curso.setCodigo(cursor.getString(1));
+                curso.setNome(cursor.getString(2));
+                curso.setDescricao(cursor.getString(3));
 
                 cursosList.add(curso);
             } while (cursor.moveToNext());
@@ -592,43 +669,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         return curso;
     }
 
-    public CursoAluno getCursoAluno(Integer userID, Integer cursoID) {
-        CursoAluno score = new CursoAluno();
-        Cursor cursor;
-        String selectQuery = "SELECT * FROM " + TABLE_CURSO_ALUNO + " WHERE " + COLUMN_USER_ID + " = '" + userID
-                            + " AND " + COLUMN_CURSO_ID + " = " + cursoID +" ;";
-        database = this.getReadableDatabase();
-        cursor = database.rawQuery(selectQuery, null);
-
-        if (cursor.moveToFirst()) {
-            score.setId(cursor.getInt(0));
-            score.setPontuacao(cursor.getInt(1));
-            score.setPercentualErro(cursor.getDouble(2));
-            score.setCurso(this.getCurso(cursor.getInt(3)));
-            score.setAluno(this.getAluno(cursor.getInt(4)));
-            score.setConteudo(this.getConteudo(cursor.getInt(5)));
-        }
-        return score;
-    }
-
-    public CursoAluno getCursoAluno(Integer alunoID) {
-        CursoAluno score = new CursoAluno();
-        Cursor cursor;
-        String selectQuery = "SELECT * FROM " + TABLE_CURSO_ALUNO + " WHERE " + COLUMN_ALUNO_ID + " = '" + alunoID +" ;";
-        database = this.getReadableDatabase();
-        cursor = database.rawQuery(selectQuery, null);
-
-        if (cursor.moveToFirst()) {
-            score.setId(cursor.getInt(0));
-            score.setPontuacao(cursor.getInt(1));
-            score.setPercentualErro(cursor.getDouble(2));
-            score.setCurso(this.getCurso(cursor.getInt(3)));
-            score.setAluno(this.getAluno(cursor.getInt(4)));
-            score.setConteudo(this.getConteudo(cursor.getInt(5)));
-        }
-        return score;
-    }
-
     public Conteudo getConteudo(int conteudoID) {
         Conteudo conteudo = new Conteudo();
         Cursor cursor;
@@ -647,11 +687,59 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         return conteudo;
     }
 
-    public Conteudo getConteudo(int cursoId, int nivelId) {
+
+    public Nivel getNivelByPontuacao(Integer pontuacao) {
+        Nivel nivel;
+        Integer id = 0, idMax = 0;
+
+        Cursor cursor1;
+        String selectQuery1 = "SELECT " + COLUMN_NIVEL_ID + " FROM " + TABLE_NIVEL + " WHERE " + COLUMN_NIVEL_ORDEM + " = " + 5 + " ; ";
+        database = this.getReadableDatabase();
+        cursor1 = database.rawQuery(selectQuery1, null);
+        if (cursor1.moveToFirst()){
+            idMax = cursor1.getInt(0);
+        }
+
+        Cursor cursor;
+        String selectQuery = "SELECT " + COLUMN_NIVEL_ID + " FROM " + TABLE_NIVEL + " WHERE " + COLUMN_NIVEL_PTS_MIN + " <= " + pontuacao + " AND "
+                                + COLUMN_NIVEL_PTS_MAX  + " > " + pontuacao + " ; ";
+        database = this.getReadableDatabase();
+        cursor = database.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            id = cursor.getInt(0);
+        }
+
+        if(id == null){
+            id = idMax;
+        }else {
+            id = cursor.getInt(0);
+        }
+        nivel = getNivel(id);
+        return nivel;
+    }
+
+    public Nivel getNivelByOrdem(Integer ordem) {
+        Nivel nivel;
+        Integer id = 0;
+
+        Cursor cursor;
+        String selectQuery1 = "SELECT " + COLUMN_NIVEL_ID + " FROM " + TABLE_NIVEL + " WHERE " + COLUMN_NIVEL_ORDEM + " = " + ordem + " ; ";
+        database = this.getReadableDatabase();
+        cursor = database.rawQuery(selectQuery1, null);
+        if (cursor.moveToFirst()){
+            id = cursor.getInt(0);
+        }
+
+        nivel = getNivel(id);
+        return nivel;
+    }
+
+
+    public Conteudo getConteudoByNivel(Integer nivelId) {
         Conteudo conteudo = new Conteudo();
         Cursor cursor;
-        String selectQuery = "SELECT * FROM " + TABLE_CONTEUDO + " WHERE " + COLUMN_CURSO_ID + " = " + cursoId + " AND "
-                             + COLUMN_NIVEL_ID  + " = " + nivelId + " ; ";
+        String selectQuery = "SELECT * FROM " + TABLE_CONTEUDO + " WHERE " + COLUMN_NIVEL_ID  + " = " + nivelId + " ; ";
         database = this.getReadableDatabase();
         cursor = database.rawQuery(selectQuery, null);
 
@@ -677,10 +765,11 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             nivel.setId(cursor.getInt(0));
             nivel.setOrdem(cursor.getInt(1));
-            nivel.setPontosQuestaoDefault(cursor.getInt(2));
-            nivel.setQtdPontosInicial(cursor.getInt(3));
-            nivel.setQtdPontosFinal(cursor.getInt(4));
-            nivel.setAmbiente(this.getAmbiente(cursor.getInt(5)));
+            nivel.setDescricao(cursor.getString(2));
+            nivel.setPontosQuestaoDefault(cursor.getInt(3));
+            nivel.setQtdPontosInicial(cursor.getInt(4));
+            nivel.setQtdPontosFinal(cursor.getInt(5));
+            nivel.setAmbiente(this.getAmbiente(cursor.getInt(6)));
         }
         return nivel;
     }
@@ -701,42 +790,31 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         return ambiente;
     }
 
-    //Método para ser utilizado no scoreBoard
-    public ArrayList<CursoAluno> getAllCursoAlunos() {
-        ArrayList<CursoAluno> listaScore = new ArrayList<CursoAluno>();
-        Cursor cursor;
+    /*Remover curso*/
+    public void deletarCursos(){
+        database = this.getWritableDatabase();
 
-        String selectQuery = "SELECT * FROM " + TABLE_CURSO_ALUNO + " ;";
-        database = this.getReadableDatabase();
-        cursor = database.rawQuery(selectQuery, null);
+        database.delete(TABLE_ALTERNATIVA_ALUNO, null, null);
+        database.delete(TABLE_ALTERNATIVA, null, null);
+        database.delete(TABLE_QUESTAO, null, null);
+        database.delete(TABLE_CONTEUDO, null, null);
+        database.delete(TABLE_CURSO, null, null);
+        database.delete(TABLE_DISCIPLINA, null, null);
 
-        if (cursor.moveToFirst()) {
-            do {
-                CursoAluno score = new CursoAluno();
-                score.setId(cursor.getInt(0));
-                score.setPontuacao(cursor.getInt(1));
-                score.setPercentualErro(cursor.getDouble(2));
-                score.setCurso(this.getCurso(cursor.getInt(3)));
-                score.setAluno(this.getAluno(cursor.getInt(4)));
-                score.setConteudo(this.getConteudo(cursor.getInt(5)));
-
-                listaScore.add(score);
-            } while (cursor.moveToNext());
-        }
-        return listaScore;
     }
 
+    /*Remover cursos pré seleção*/
+    public void deletarCursosPreSelecao(){
+        database = this.getWritableDatabase();
+        database.delete(TABLE_CURSO_PRE, null, null);
+    }
 
-    /*
-     All methods to update the information in the database.
-                                                            */
-    public CursoAluno addPontuacao(AlternativaAluno aa, Curso curso) {
-        Integer pontuacao = 0, qtdAcertos = 0, qtdErros = 0, pontuacaoMax = 0;
-        Double percentualErro = Double.valueOf(0);
-        Conteudo conteudoAtual = new Conteudo();
-        CursoAluno cursoAluno = new CursoAluno();
-
-        this.addAlternativaAluno(aa);
+    public CursoAluno getCursoAluno(Aluno aluno) {
+        Integer qtdAcertos = 0, pontuacao = 0, qtdErros = 0;
+        Double percentualErro;
+        Nivel nivel;
+        Conteudo conteudo;
+        CursoAluno cursoAluno = null;
 
         //Buscando a quantidade de acertos e a pontuação baseado na tabela alternativaAluno
         Cursor cursor;
@@ -744,7 +822,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                 + " AA INNER JOIN " + TABLE_ALTERNATIVA + " A ON AA." + COLUMN_ALTERNATIVA_ID + " = " + " A."
                 + COLUMN_ALTERNATIVA_ID + " INNER JOIN " + TABLE_QUESTAO + " Q ON Q." + COLUMN_QUESTAO_ID + " = "
                 + " A." + COLUMN_QUESTAO_ID + " WHERE " + COLUMN_ALTERNATIVA_VALOR + " = " + 1 + " AND AA."
-                + COLUMN_ALUNO_ID + " = " + aa.getAluno().getId();
+                + COLUMN_ALUNO_ID + " = " + aluno.getId();
 
         database = this.getReadableDatabase();
         cursor = database.rawQuery(selectQuery, null);
@@ -757,9 +835,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         Cursor cursor2;
         String selectQuery2 = "SELECT COUNT(0) FROM " + TABLE_ALTERNATIVA_ALUNO
                 + " AA INNER JOIN " + TABLE_ALTERNATIVA + " A ON AA." + COLUMN_ALTERNATIVA_ID + " = " + " A."
-                + COLUMN_ALTERNATIVA_ID + " INNER JOIN " + TABLE_QUESTAO + " Q ON Q." + COLUMN_QUESTAO_ID + " = "
-                + " A." + COLUMN_QUESTAO_ID + " WHERE " + COLUMN_ALTERNATIVA_VALOR + " = " + 0 + " AND AA."
-                + COLUMN_ALUNO_ID + " = " + aa.getAluno().getId();
+                + COLUMN_ALTERNATIVA_ID + " WHERE (A." + COLUMN_ALTERNATIVA_VALOR + " IS NULL OR A." + COLUMN_ALTERNATIVA_VALOR
+                + " <> " + 1 + ") AND AA." + COLUMN_ALUNO_ID + " = " + aluno.getId();
 
         database = this.getReadableDatabase();
         cursor2 = database.rawQuery(selectQuery2, null);
@@ -768,96 +845,46 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         }
 
         //Calculando o percentual de erros
-        percentualErro = (new BigDecimal(qtdErros / (qtdErros + qtdAcertos)).setScale(2, RoundingMode.HALF_EVEN)).doubleValue();
+        if ((qtdErros + qtdAcertos) == 0){
+            percentualErro = 0.00;
+        }else {
+            percentualErro = (qtdErros.doubleValue()/(qtdErros + qtdAcertos))*100;
+            Integer v = (percentualErro.intValue());
+            percentualErro = v.doubleValue();
 
-        //Buscar o Ultimo conteúdo do curso, para verificar se o aluno já venceu o jogo
-        Cursor cursor3;
-        String selectQuery3 = "SELECT " + COLUMN_NIVEL_PTS_MAX + " FROM " + TABLE_NIVEL
-                + " WHERE " + COLUMN_NIVEL_ORDEM + " = " + 5;
-
-        database = this.getReadableDatabase();
-        cursor3 = database.rawQuery(selectQuery3, null);
-        if (cursor3.moveToFirst()) {
-            pontuacaoMax = cursor3.getInt(0);
+                    //(new BigDecimal((qtdErros / (qtdErros + qtdAcertos)*100)).setScale(2, RoundingMode.HALF_EVEN)).doubleValue();
         }
 
-        //Verificar se a pontuação do aluno é maior que a pontuacao final do maior nível
-        if (pontuacao >= pontuacaoMax) {
-            pontuacao = pontuacaoMax;
-            //Buscar o Conteúdo do Ultimo nível
-            Cursor cursor4;
-            String selectQuery4 = "SELECT " + COLUMN_CONTEUDO_ID + " FROM " + TABLE_CONTEUDO
-                    + " C INNER JOIN " + TABLE_NIVEL + " N ON N." + COLUMN_NIVEL_ID + " = C."
-                    + COLUMN_NIVEL_ID + " WHERE N." + COLUMN_NIVEL_ORDEM + " = " + 5 + " AND C."
-                    + COLUMN_CURSO_ID + " = " + curso.getId();
+        nivel = getNivelByPontuacao(pontuacao);
+        conteudo = getConteudoByNivel(nivel.getId());
 
-            database = this.getReadableDatabase();
-            cursor4 = database.rawQuery(selectQuery4, null);
-            if (cursor4.moveToFirst()) {
-                conteudoAtual = this.getConteudo(cursor4.getInt(0));
-            }
-        } else {
-            //Buscar o Conteúdo do nível correspondente do aluno
-            Cursor cursor5;
-            String selectQuery5 = "SELECT " + COLUMN_CONTEUDO_ID + " FROM " + TABLE_CONTEUDO
-                    + " C INNER JOIN " + TABLE_NIVEL + " N ON N." + COLUMN_NIVEL_ID + " = C."
-                    + COLUMN_NIVEL_ID + " WHERE C." + COLUMN_CURSO_ID + " = " + curso.getId()
-                    + " AND N." + COLUMN_NIVEL_PTS_MIN + " <= " + pontuacao + " AND N."
-                    + COLUMN_NIVEL_PTS_MAX + " > " + pontuacao;
-
-            database = this.getReadableDatabase();
-            cursor5 = database.rawQuery(selectQuery5, null);
-            if (cursor5.moveToFirst()) {
-                conteudoAtual = this.getConteudo(cursor5.getInt(0));
-            }
-        }
 
         //Preenche o objeto cursoAluno Atualizado
-        cursoAluno.setConteudo(conteudoAtual);
-        cursoAluno.setCurso(curso);
+        cursoAluno = new CursoAluno();
+        cursoAluno.setConteudo(conteudo);
+        cursoAluno.setCurso(conteudo.getCurso());
         cursoAluno.setPercentualErro(percentualErro);
         cursoAluno.setPontuacao(pontuacao);
-        cursoAluno.setAluno(aa.getAluno());
+        cursoAluno.setAluno(aluno);
 
-        //Verificar se Existe Curso_Aluno para este caso
-        Cursor cursor5;
-        String selectQuery5 = "SELECT count(0) FROM " + TABLE_CURSO_ALUNO + " WHERE "
-                + COLUMN_ALUNO_ID + " = " + aa.getAluno().getId() + " AND "
-                + COLUMN_CURSO_ID + " = " + curso.getId();
-
-        database = this.getReadableDatabase();
-        cursor5 = database.rawQuery(selectQuery5, null);
-
-        if (cursor5.moveToFirst()) {
-            if (cursor5.getInt(0) == 0) {
-                this.addCursoAluno(cursoAluno);
-            } else {
-                //update curso_aluno
-                Cursor cursor6;
-                String selectQuery6 = "SELECT * FROM " + TABLE_CURSO_ALUNO + " WHERE "
-                        + COLUMN_ALUNO_ID + " = " + aa.getAluno().getId() + " AND "
-                        + COLUMN_CURSO_ID + " = " + curso.getId();
-
-                database = this.getReadableDatabase();
-                cursor6 = database.rawQuery(selectQuery6, null);
-                if (cursor5.moveToFirst()) {
-                    ContentValues values;
-                    values = new ContentValues();
-                    values.put(COLUMN_CURSO_ALUNO_ID, cursor6.getInt(0));
-                    values.put(COLUMN_CURSO_ALUNO_PTS, cursoAluno.getPontuacao());
-                    values.put(COLUMN_CURSO_ALUNO_ERRO, cursoAluno.getPercentualErro());
-                    values.put(COLUMN_CURSO_ID, cursor6.getInt(3));
-                    values.put(COLUMN_ALUNO_ID, cursor6.getInt(4));
-                    values.put(COLUMN_CONTEUDO_ID, cursoAluno.getConteudo().getId());
-
-                    database = this.getWritableDatabase();
-                    database.update(TABLE_CURSO_ALUNO, values, COLUMN_CURSO_ALUNO_ID + "= ?", new String[]{Integer.toString((int) cursor6.getInt(0))});
-                }
-
-            }
-
-        }
         return cursoAluno;
+    }
+
+    //Método para ser utilizado no scoreBoard
+    public ArrayList<CursoAluno> getAllCursoAlunos() {
+        ArrayList<CursoAluno> listaScore = new ArrayList<CursoAluno>();
+        List<Aluno> alunos;
+        CursoAluno item;
+
+        alunos = this.getAllAlunos();
+
+        for (Aluno a:  alunos){
+            item = this.getCursoAluno(a);
+
+            listaScore.add(item);
+        }
+
+        return listaScore;
     }
 
 }

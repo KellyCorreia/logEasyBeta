@@ -122,14 +122,13 @@ public class User extends AbstractDomainClass implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel out, int flags) {
-        out.writeLong(id);
+        out.writeInt(id);
         out.writeString(username);
         out.writeString(email);
         out.writeString(password);
     }
 
     private void readFromParcel(Parcel in) {
-
         id = in.readInt();
         username = in.readString();
         email = in.readString();

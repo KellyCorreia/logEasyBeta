@@ -1,9 +1,12 @@
 package com.example.kelly.logeasyfinal.modelo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.util.List;
 
-public class Ambiente extends AbstractDomainClass implements Serializable {
+public class Ambiente extends AbstractDomainClass implements Serializable, Parcelable {
 	private static final long serialVersionUID = 1L;
 	
 	private String objetivo;
@@ -11,9 +14,17 @@ public class Ambiente extends AbstractDomainClass implements Serializable {
     private String descricao;
 
 	private Nivel nivel;
-	private List<AmbienteAvatar> AmbientesAvatar;
+	private List<AmbienteAvatar> ambientesAvatar;
 
-	public Ambiente() {
+	public Ambiente(){
+	}
+
+	public Ambiente(Parcel in) {
+		readFromParcel(in);
+	}
+
+	public Ambiente(Integer id){
+		this.id = id;
 	}
 
 	public String getDescricao() {
@@ -49,11 +60,43 @@ public class Ambiente extends AbstractDomainClass implements Serializable {
 	}
 
 	public List<AmbienteAvatar> getAmbientesAvatar() {
-		return AmbientesAvatar;
+		return ambientesAvatar;
 	}
 
 	public void setAmbientesAvatar(List<AmbienteAvatar> ambientesAvatar) {
-		AmbientesAvatar = ambientesAvatar;
+		this.ambientesAvatar = ambientesAvatar;
 	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel out, int flags) {
+		out.writeInt(id);
+		out.writeString(objetivo);
+		out.writeString(elemento);
+		out.writeString(descricao);
+		out.writeParcelable(nivel,  flags);
+	}
+
+	private void readFromParcel(Parcel in) {
+		id = in.readInt();
+		objetivo = in.readString();
+		elemento = in.readString();
+		descricao = in.readString();
+		nivel = in.readParcelable(Nivel.class.getClassLoader());
+	}
+
+	@SuppressWarnings("unchecked")
+	public static final Creator CREATOR = new Creator() {
+		public Ambiente createFromParcel(Parcel in) {
+			return new Ambiente(in);
+		}
+		public Ambiente[] newArray(int size) {
+			return new Ambiente[size];
+		}
+	};
 
 }

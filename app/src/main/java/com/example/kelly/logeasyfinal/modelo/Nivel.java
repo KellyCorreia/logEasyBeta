@@ -1,9 +1,12 @@
 package com.example.kelly.logeasyfinal.modelo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.util.List;
 
-public class Nivel extends AbstractDomainClass implements Serializable {
+public class Nivel extends AbstractDomainClass implements Serializable, Parcelable {
 	private static final long serialVersionUID = 1L;
 
 	private String descricao;
@@ -18,9 +21,17 @@ public class Nivel extends AbstractDomainClass implements Serializable {
 
 	private Ambiente ambiente;
 
-	private List<Conteudo> conteudos; 
+	private List<Conteudo> conteudos;
 
-	public Nivel() {
+	public Nivel(){
+	}
+
+	public Nivel(Parcel in) {
+		readFromParcel(in);
+	}
+
+	public Nivel(Integer id){
+		this.id = id;
 	}
 
 	public String getDescricao() {
@@ -55,14 +66,6 @@ public class Nivel extends AbstractDomainClass implements Serializable {
 		this.qtdPontosInicial = qtdPontosInicial;
 	}
 
-	public Ambiente getTema() {
-		return this.ambiente;
-	}
-
-	public void setTema(Ambiente tema) {
-		this.ambiente = tema;
-	}
-
 	public Ambiente getAmbiente() {
 		return ambiente;
 	}
@@ -86,5 +89,41 @@ public class Nivel extends AbstractDomainClass implements Serializable {
 	public void setOrdem(int ordem) {
 		this.ordem = ordem;
 	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel out, int flags) {
+		out.writeInt(id);
+		out.writeString(descricao);
+		out.writeInt(ordem);
+		out.writeInt(pontosQuestaoDefault);
+		out.writeInt(qtdPontosFinal);
+		out.writeInt(qtdPontosInicial);
+		out.writeParcelable(ambiente,  flags);
+	}
+
+	private void readFromParcel(Parcel in) {
+		id = in.readInt();
+		descricao = in.readString();
+		ordem = in.readInt();
+		pontosQuestaoDefault = in.readInt();
+		qtdPontosFinal = in.readInt();
+		qtdPontosInicial = in.readInt();
+		ambiente = in.readParcelable(Ambiente.class.getClassLoader());
+	}
+
+	@SuppressWarnings("unchecked")
+	public static final Creator CREATOR = new Creator() {
+		public Nivel createFromParcel(Parcel in) {
+			return new Nivel(in);
+		}
+		public Nivel[] newArray(int size) {
+			return new Nivel[size];
+		}
+	};
 	
 }

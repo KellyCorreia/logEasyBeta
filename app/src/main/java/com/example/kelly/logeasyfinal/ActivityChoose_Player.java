@@ -11,9 +11,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.example.kelly.logeasyfinal.modelo.Aluno;
-import com.example.kelly.logeasyfinal.modelo.Avatar;
 import com.example.kelly.logeasyfinal.persistencia.MySQLiteHelper;
-import com.example.kelly.logeasyfinal.modelo.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,14 +27,14 @@ public class ActivityChoose_Player extends Activity {
     public void addContentGrid(){
 
         MySQLiteHelper db = new MySQLiteHelper(this);
-        alunos = db.getAllAlunos();
+        alunos = db.getAllAlunosUsuarios();
         if(alunos.size()!=0) {
 
             String imageAvatar;
 
             for (int i = 0; i < alunos.size(); i++) {
                 imageAvatar = alunos.get(i).getAvatar().getNome();
-                int identifier = getResources().getIdentifier(imageAvatar, "drawable", "package.name");
+                int identifier = getResources().getIdentifier(imageAvatar, "drawable", this.getPackageName());
                 // imageId.add(i, R.drawable.avatar1);, foi trocado por:
                 imageId.add(i, identifier);
 

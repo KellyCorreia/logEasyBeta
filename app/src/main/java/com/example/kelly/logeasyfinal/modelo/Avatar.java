@@ -1,9 +1,12 @@
 package com.example.kelly.logeasyfinal.modelo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.util.List;
 
-public class Avatar extends AbstractDomainClass implements Serializable {
+public class Avatar extends AbstractDomainClass implements Parcelable, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	 private String nome;
@@ -12,12 +15,29 @@ public class Avatar extends AbstractDomainClass implements Serializable {
 	private List<Aluno> alunos;
 	private List<AmbienteAvatar> ambientesAvatar;
 
-	public Avatar() {
+	public Avatar(){
+
 	}
 
-	public Avatar(String n) {
-		this.nome = n;
+	public Avatar(Integer id){
+		this.id = id;
 	}
+
+	protected Avatar(Parcel in) {
+		readFromParcel(in);
+	}
+
+	public static final Creator<Avatar> CREATOR = new Creator<Avatar>() {
+		@Override
+		public Avatar createFromParcel(Parcel in) {
+			return new Avatar(in);
+		}
+
+		@Override
+		public Avatar[] newArray(int size) {
+			return new Avatar[size];
+		}
+	};
 
 	public String getCaracteristica() {
 		return this.caracteristica;
@@ -49,5 +69,24 @@ public class Avatar extends AbstractDomainClass implements Serializable {
 
 	public void setAmbientesAvatar(List<AmbienteAvatar> ambientesAvatar) {
 		this.ambientesAvatar = ambientesAvatar;
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel out, int flags) {
+		out.writeInt(id);
+		out.writeString(nome);
+		out.writeString(caracteristica);
+	}
+
+	private void readFromParcel(Parcel in) {
+		id = in.readInt();
+		nome = in.readString();
+		caracteristica = in.readString();
+
 	}
 }

@@ -15,7 +15,8 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:background="#ff192030"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_alignParentLeft="true">
 
         <ImageView
             android:layout_width="145dp"
@@ -54,10 +55,19 @@
             android:layout_margin="10dp"
             android:fillViewport="false">
 
-            <ImageView
-                android:id="@+id/ivwHInt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Large Text"
+                android:id="@+id/txtHint"
+                android:layout_alignParentTop="true"
+                android:textAlignment="center"
+                android:typeface="sans"
+                android:textColor="#ff1b2232"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"
+                android:gravity="top|center_horizontal" />
         </ScrollView>
 
     </LinearLayout>

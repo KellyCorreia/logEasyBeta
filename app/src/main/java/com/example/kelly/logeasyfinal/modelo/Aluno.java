@@ -21,11 +21,19 @@ public class Aluno extends AbstractDomainClass implements Parcelable, Serializab
 	public Aluno() {
 	}
 
+    public Aluno(Parcel in) {
+        readFromParcel(in);
+    }
+
 	public Aluno(String codigo, String nome, User usuario, Avatar avatar) {
 		this.codigo = codigo;
 		this.nome = nome;
 		this.usuario = usuario;
 		this.avatar = avatar;
+	}
+
+	public Aluno(Integer i){
+		this.id = i;
 	}
 
 	public String getNome() {
@@ -86,12 +94,26 @@ public class Aluno extends AbstractDomainClass implements Parcelable, Serializab
 		out.writeInt(id);
 		out.writeString(codigo);
 		out.writeString(nome);
+		out.writeParcelable(usuario, flags);
+        out.writeParcelable(avatar, flags);
 	}
-
 
 	private void readFromParcel(Parcel in) {
 		id = in.readInt();
 		codigo = in.readString();
 		nome = in.readString();
+        usuario = in.readParcelable(User.class.getClassLoader());
+		avatar = in.readParcelable(Avatar.class.getClassLoader());
 	}
+
+	@SuppressWarnings("unchecked")
+	public static final Creator CREATOR = new Creator() {
+		public Aluno createFromParcel(Parcel in) {
+			return new Aluno(in);
+		}
+
+		public Aluno[] newArray(int size) {
+			return new Aluno[size];
+		}
+	};
 }

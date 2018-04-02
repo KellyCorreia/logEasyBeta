@@ -1,10 +1,13 @@
 package com.example.kelly.logeasyfinal.modelo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Questao extends AbstractDomainClass implements Serializable {
+public class Questao extends AbstractDomainClass implements Serializable, Parcelable {
     private static final long serialVersionUID = 1L;
 
     private String enunciado;
@@ -25,6 +28,14 @@ public class Questao extends AbstractDomainClass implements Serializable {
         id =q_id;
         enunciado =q_text;
         level_id=l_id;
+    }
+
+    public Questao(Parcel in) {
+        readFromParcel(in);
+    }
+
+    public Questao(Integer id){
+        this.id = id;
     }
 
     public String getEnunciado() {
@@ -84,6 +95,34 @@ public class Questao extends AbstractDomainClass implements Serializable {
     public String toString() {
         return enunciado;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeInt(id);
+        out.writeString(enunciado);
+        out.writeInt(pontuacao);
+    }
+
+    private void readFromParcel(Parcel in) {
+        id = in.readInt();
+        enunciado = in.readString();
+        pontuacao = in.readInt();
+    }
+
+    @SuppressWarnings("unchecked")
+    public static final Creator CREATOR = new Creator() {
+        public Questao createFromParcel(Parcel in) {
+            return new Questao(in);
+        }
+        public Questao[] newArray(int size) {
+            return new Questao[size];
+        }
+    };
 }
 
 

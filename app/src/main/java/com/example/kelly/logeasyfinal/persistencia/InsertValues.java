@@ -1,11 +1,24 @@
 package com.example.kelly.logeasyfinal.persistencia;
 
 
-import com.example.kelly.logeasyfinal.modelo.Alternativa;
+import android.os.AsyncTask;
+import android.util.Log;
+
+import com.example.kelly.logeasyfinal.modelo.Ambiente;
+import com.example.kelly.logeasyfinal.modelo.AmbienteAvatar;
 import com.example.kelly.logeasyfinal.modelo.Avatar;
-import com.example.kelly.logeasyfinal.modelo.Curso;
-import com.example.kelly.logeasyfinal.modelo.Conteudo;
-import com.example.kelly.logeasyfinal.modelo.Questao;
+import com.example.kelly.logeasyfinal.modelo.Nivel;
+import com.example.kelly.logeasyfinal.util.Propriedades;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 public class InsertValues {
 
@@ -15,14 +28,89 @@ public class InsertValues {
         db = database;
     }
 
-    public void insertAllValues(){
-        this.addCursos();
-        this.addLevels();
-        this.addQuestions();
-        this.addAnswers();
+    public void insertAllTabelasFixas(){
+        new HttpRequestTaskAvatars().execute();
+        new HttpRequestTaskNiveis().execute();
     }
 
-    private void addQuestions() {
+    /*Buscando os Avatars*/
+    private class HttpRequestTaskAvatars extends AsyncTask<Void, Void, List<Avatar>> {
+        @Override
+        protected List<Avatar> doInBackground(Void... params) {
+            try {
+                final String url = Propriedades.getUrlServico()+"curso/avatars";
+                RestTemplate restTemplate = new RestTemplate();
+                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+                ResponseEntity<Avatar[]> responseEntity = restTemplate.getForEntity(url, Avatar[].class);
+                return Arrays.asList(responseEntity.getBody());
+            } catch (Exception e) {
+                Log.i("errowebservice", e.getMessage());
+                System.out.print("ERRO NO WEBSERVICE: " + e.getMessage());
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(List<Avatar> avatars) {
+
+            for (Avatar av: avatars) {
+                Log.i("avatar", "Avatar==>" + av.getId() + " , " + av.getCaracteristica() + " , " + av.getNome());
+                db.addAvatar(av);
+            }
+            //teste
+            Log.i("avatarInserido", "Avatar==>" +  db.getAvatar(3).getNome() + " , " +  db.getAvatar(3).getCaracteristica());
+        }
+    }
+
+    /*Buscando os níveis*/
+    private class HttpRequestTaskNiveis extends AsyncTask<Void, Void, List<Nivel>> {
+        @Override
+        protected List<Nivel> doInBackground(Void... params) {
+            try {
+                final String url = Propriedades.getUrlServico()+"curso/niveis";
+                RestTemplate restTemplate = new RestTemplate();
+                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+                //Nivel[] nivel = restTemplate.getForObject(url, Nivel[].class);
+                //ResponseEntity<Nivel[]> responseEntity = restTemplate.getForEntity(url, Nivel[].class);
+                //ResponseEntity<List<Nivel>> res = restTemplate.postForEntity(url, HttpMethod.GET, new ParameterizedTypeReference<List<Nivel>>() {});
+                ResponseEntity<Nivel[]> responseEntity = restTemplate.getForEntity(url, Nivel[].class);
+                return Arrays.asList(responseEntity.getBody());
+            } catch (Exception e) {
+                Log.i("errowebservice", e.getMessage());
+                System.out.print("ERRO NO WEBSERVICE: " + e.getMessage());
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(List<Nivel> niveis) {
+
+            for (Nivel nivel: niveis) {
+                //Log.i("avatarNome","Avatar==>" + nivel.getId()+", "+ nivel.getOrdem());
+                //Log.i("avatar","Ambientes==>" + nivel.getAmbiente().getDescricao());
+                db.addAmbiente(nivel.getAmbiente());
+                db.addNivel(nivel);
+                if (nivel.getAmbiente() != null && nivel.getAmbiente().getAmbientesAvatar() != null) {
+                    for (AmbienteAvatar av : nivel.getAmbiente().getAmbientesAvatar()) {
+
+                        db.addAmbienteAvatar(av);
+
+                        //Log.i("avatar", "Avatar==>" + av.getId() + " , " + av.getFalaInicialNivel() + "idAvatar" + av.getAvatar().getId() + "idAmbiente" + av.getAmbiente().getId());
+                        //Log.i("avatarCarac", "Avatar==>" + av.getAvatar().getId() + " , " + av.getAvatar().getNome() + " , " + av.getAvatar().getCaracteristica());
+                    }
+                }
+            }
+            //teste para ver se está salvando
+            Nivel nv = db.getNivel(8);
+            Log.i("Nivel ", "desc " + nv.getDescricao() + "Ambiente: " + nv.getAmbiente().getElemento());
+            nv = db.getNivel(10);
+            Log.i("Nivel ", "desc " + nv.getDescricao() + "Ambiente: " + nv.getAmbiente().getElemento());
+        }
+    }
+
+    /*private void addQuestions() {
 
        //These are the questions from the first version of the app
         Questao q1 = new Questao("Q001", "Which one is the contradictory of the " +
@@ -165,5 +253,5 @@ public class InsertValues {
                 " 5 questions right.</p>" + "<p>So, lets get started with the concepts:</p>" + "<p>The rule: true statements stand as premises and they can derive in conclusions" +
                 " (respecting the rules learned by now and the semantics). </p>" + "<p>A→B</p>" + "<p>A/B</p>", "Tip 10", 1);
         db.addLevel(l5);
-    }
+    }*/
 }

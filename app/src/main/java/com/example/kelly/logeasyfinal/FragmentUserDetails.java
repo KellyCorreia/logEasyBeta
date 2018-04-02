@@ -36,7 +36,7 @@ public class FragmentUserDetails extends Fragment {
         View view = inflater.inflate(R.layout.fragment_userdetails, container, false);
         aluno = getArguments().getParcelable("chosenUser");
         db = new MySQLiteHelper(getActivity());
-        userScore = db.getCursoAluno(aluno.getId());
+        userScore = db.getCursoAluno(aluno);
         userLevel = db.getConteudo(userScore.getConteudo().getId());
 
         ImageView circleAvatar = (ImageView)view.findViewById(R.id.circleAvatar);

@@ -28,7 +28,7 @@ import java.util.List;
 public class ActivityQuiz extends Activity {
 
     List<Questao> qList = new ArrayList<>();
-    List<Alternativa> aList = new ArrayList<>();
+    List<Alternativa> aList = new ArrayList<Alternativa>();
 
     TextView txtQuest, txtPoints;
     RadioGroup grp;
@@ -60,7 +60,7 @@ public class ActivityQuiz extends Activity {
         aluno = extras.getParcelable("chosenUser");
         selecLevel = extras.getParcelable("chosenLevel");
 
-        scoreAluno = db.getCursoAluno(aluno.getId(), selecLevel.getCurso().getId());
+        scoreAluno = db.getCursoAluno(aluno);
 
         score = scoreAluno.getPontuacao();
         wScore = scoreAluno.getPercentualErro();
@@ -93,6 +93,8 @@ public class ActivityQuiz extends Activity {
                     }else if(rdc.isChecked()){
                         alternativaAluno = new AlternativaAluno(altc, aluno);
                     }
+
+                    db.addAlternativaAluno(alternativaAluno);
 
                     if (userAnswer == rightAnswer) {
                         Toast.makeText(ActivityQuiz.this, "Você Acertou!", Toast.LENGTH_SHORT).show();
@@ -155,9 +157,9 @@ public class ActivityQuiz extends Activity {
 
         aList = db.alternativasQuestao(qList.get(0));
         String backBaseName = "backgroundlevel";
-        layout.setBackgroundResource(getResources().getIdentifier(backBaseName + String.valueOf(selecLevel.getNivel().getId()), "drawable", this.getPackageName()));
+        layout.setBackgroundResource(getResources().getIdentifier(backBaseName + String.valueOf(selecLevel.getNivel().getOrdem()), "drawable", this.getPackageName()));
 
-        txtPoints.setText(Integer.toString(scoreAluno.getPontuacao()));
+        txtPoints.setText(Integer.toString(score));
         txtQuest.setText(qList.get(0).getEnunciado());
         questao = qList.get(0);
         int i= 0;
@@ -166,7 +168,7 @@ public class ActivityQuiz extends Activity {
                 rda.setText(aList.get(i).getTexto());
                 alta = aList.get(i);
             }else if(i == 1){
-                rda.setText(aList.get(i).getTexto());
+                rdb.setText(aList.get(i).getTexto());
                 altb = aList.get(i);
             }else if(i == 2){
                 rdc.setVisibility(View.VISIBLE);
@@ -175,10 +177,10 @@ public class ActivityQuiz extends Activity {
             }
             i++;
         }
-        if(aList.get(0).isValor()) {
+        if(alta.isValor()) {
             rightAnswer = rda;
         }else {
-            if (aList.get(1).isValor()) {
+            if (altb.isValor()) {
                 rightAnswer = rdb;
             } else {
                 rightAnswer = rdc;
@@ -210,7 +212,7 @@ public class ActivityQuiz extends Activity {
     private void setScoreBoard(){
 
         intent.setClass(ActivityQuiz.this, ActivityLesson.class);
-        CursoAluno scoreAtual = db.addPontuacao(alternativaAluno, selecLevel.getCurso());
+        CursoAluno scoreAtual = db.getCursoAluno(aluno);
         score = scoreAtual.getPontuacao();
         wScore = scoreAtual.getPercentualErro();
         scoreAluno = scoreAtual;
@@ -222,10 +224,13 @@ public class ActivityQuiz extends Activity {
             selecLevel = scoreAtual.getConteudo();
             intent.putExtra("chosenUser", (Parcelable) aluno);
             intent.putExtra("chosenLevel", (Parcelable) selecLevel);
-            intent.putExtra("userScore", score);
+            intent.putExtra("chosenCurso", (Parcelable) selecLevel.getCurso());
+            intent.putExtra("userScore", (Parcelable) scoreAluno);
 
             startActivity(intent);
             finish();
+        }else {
+            this.setQuestionView();
         }
     }
 }

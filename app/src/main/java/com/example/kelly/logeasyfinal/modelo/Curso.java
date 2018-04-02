@@ -9,7 +9,7 @@ import java.util.List;
 public class Curso extends AbstractDomainClass implements Parcelable, Serializable {
     private static final long serialVersionUID = 1L;
 
-    private int id;
+    //private int id;
     private String codigo;
     private String nome;
     private String descricao;
@@ -29,7 +29,7 @@ public class Curso extends AbstractDomainClass implements Parcelable, Serializab
         readFromParcel(in);
     }
 
-    public Curso(int c_id, String c_name, String desc){
+    public Curso(Integer c_id, String c_name, String desc){
         id =c_id;
         nome =c_name;
         descricao=desc;

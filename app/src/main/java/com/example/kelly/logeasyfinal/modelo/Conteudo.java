@@ -18,11 +18,8 @@ public class Conteudo extends AbstractDomainClass implements Serializable, Parce
 
     private List<Questao> questoes;
 
-    private int curso_id;
-
     public Conteudo(){
         id = 0;
-        curso_id = 0;
         nome ="";
         licao ="";
         dica ="";
@@ -61,14 +58,6 @@ public class Conteudo extends AbstractDomainClass implements Serializable, Parce
         this.professor = professor;
     }
 
-    public Curso getGrupoConteudo() {
-        return curso;
-    }
-
-    public void setGrupoConteudo(Curso grupoConteudo) {
-        this.curso = grupoConteudo;
-    }
-
     public Nivel getNivel() {
         return nivel;
     }
@@ -98,20 +87,12 @@ public class Conteudo extends AbstractDomainClass implements Serializable, Parce
         return this.id + " - " + this.dica + " - " + this.licao;
     }
 
-    public int getCurso_id() {
-        return curso_id;
-    }
-    public void setCurso_id(int c_id) {
-        this.curso_id = c_id;
-    }
-
     public Conteudo(Parcel in) {
         readFromParcel(in);
     }
 
     public Conteudo(int l_id, String l_name, String l_lesson, String l_tip, int c_id){
         id =l_id;
-        curso_id = c_id;
         nome =l_name;
         licao =l_lesson;
         dica =l_tip;
@@ -125,18 +106,22 @@ public class Conteudo extends AbstractDomainClass implements Serializable, Parce
     @Override
     public void writeToParcel(Parcel out, int flags) {
         out.writeInt(id);
-        out.writeInt(curso_id);
-        out.writeString(nome);
         out.writeString(licao);
         out.writeString(dica);
+        out.writeString(nome);
+        out.writeParcelable(professor,  flags);
+        out.writeParcelable(curso, flags);
+        out.writeParcelable(nivel, flags);
     }
 
     private void readFromParcel(Parcel in) {
         id = in.readInt();
-        curso_id = in.readInt();
-        nome = in.readString();
         licao = in.readString();
         dica = in.readString();
+        nome = in.readString();
+        professor = in.readParcelable(Professor.class.getClassLoader());
+        curso = in.readParcelable(Curso.class.getClassLoader());
+        nivel = in.readParcelable(Nivel.class.getClassLoader());
     }
 
     @SuppressWarnings("unchecked")

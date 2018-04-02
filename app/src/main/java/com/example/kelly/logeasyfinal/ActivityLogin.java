@@ -43,13 +43,13 @@ public class ActivityLogin extends Activity {
 
         //Setting image avatar
         ImageView imageAvatar = (ImageView) findViewById(R.id.imvUserGuide);
-        if(aluno.getAvatar().getNome().equals("Avatar1")){
+        if(aluno.getAvatar().getNome().equals("avatar1")){
             imageAvatar.setImageResource(R.drawable.avatar1);
-        }else if(aluno.getAvatar().getNome().equals("Avatar2")) {
+        }else if(aluno.getAvatar().getNome().equals("avatar2")) {
             imageAvatar.setImageResource(R.drawable.avatar2);
-        }else if (aluno.getAvatar().getNome().equals("Avatar3")){
+        }else if (aluno.getAvatar().getNome().equals("avatar3")){
             imageAvatar.setImageResource(R.drawable.avatar3);
-        }else if (aluno.getAvatar().getNome().equals("Avatar4")){
+        }else if (aluno.getAvatar().getNome().equals("avatar4")){
             imageAvatar.setImageResource(R.drawable.avatar4);
         }
 

@@ -1,9 +1,12 @@
 package com.example.kelly.logeasyfinal.modelo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.util.List;
 
-public class Alternativa extends AbstractDomainClass implements Serializable {
+public class Alternativa extends AbstractDomainClass implements Serializable, Parcelable {
 
     private String texto;
     private boolean valor;
@@ -27,6 +30,14 @@ public class Alternativa extends AbstractDomainClass implements Serializable {
         id =a_id;
         question_id=q_id;
         texto =a_text;
+    }
+
+    public Alternativa(Parcel in) {
+        readFromParcel(in);
+    }
+
+    public Alternativa(Integer i){
+        this.id = i;
     }
 
     public String getTexto() {
@@ -77,6 +88,42 @@ public class Alternativa extends AbstractDomainClass implements Serializable {
     public String toString() {
         return texto;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeInt(id);
+        out.writeString(getTexto());
+        if(this.valor == true){
+            out.writeInt(1);
+        }else {
+            out.writeInt(0);
+        }
+    }
+
+    private void readFromParcel(Parcel in) {
+        id = in.readInt();
+        texto = in.readString();
+        if (in.readInt() == 1){
+            valor = true;
+        }else{
+            valor = false;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static final Creator CREATOR = new Creator() {
+        public Alternativa createFromParcel(Parcel in) {
+            return new Alternativa(in);
+        }
+        public Alternativa[] newArray(int size) {
+            return new Alternativa[size];
+        }
+    };
 
     //remover
     public String getQuestion_id() {

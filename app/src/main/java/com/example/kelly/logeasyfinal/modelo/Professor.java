@@ -1,9 +1,12 @@
 package com.example.kelly.logeasyfinal.modelo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.util.List;
 
-public class Professor extends AbstractDomainClass implements Serializable {
+public class Professor extends AbstractDomainClass implements Serializable, Parcelable {
 	private static final long serialVersionUID = 1L;
 
 	private String codigo;
@@ -13,6 +16,10 @@ public class Professor extends AbstractDomainClass implements Serializable {
 	private List<Conteudo> conteudos;
 
 	public Professor() {
+	}
+
+	public Professor(Parcel in) {
+		readFromParcel(in);
 	}
 
 	public String getNome() {
@@ -52,4 +59,32 @@ public class Professor extends AbstractDomainClass implements Serializable {
 		Professor prof = (Professor) obj;
 		return this.id.equals(prof.id);
 	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel out, int flags) {
+		out.writeInt(id);
+		out.writeString(codigo);
+		out.writeString(nome);
+	}
+
+	private void readFromParcel(Parcel in) {
+		id = in.readInt();
+		codigo = in.readString();
+		nome = in.readString();
+	}
+
+	@SuppressWarnings("unchecked")
+	public static final Creator CREATOR = new Creator() {
+		public Professor createFromParcel(Parcel in) {
+			return new Professor(in);
+		}
+		public Professor[] newArray(int size) {
+			return new Professor[size];
+		}
+	};
 }

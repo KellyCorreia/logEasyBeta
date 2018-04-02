@@ -18,10 +18,11 @@ import java.util.Random;
 
 
 public class ActivityHint extends Activity {
-    TextView txtPoints;
+
+    TextView txtPoints, txtHint;
     Button btnPlay;
     ImageView ImgAvatar;
-    ImageView ImgHint;
+    //ImageView ImgHint;
     RelativeLayout layout;
     LinearLayout firstLayout;
     Aluno aluno;
@@ -40,9 +41,10 @@ public class ActivityHint extends Activity {
         score = (CursoAluno) extras.getParcelable("userScore");
 
         txtPoints = (TextView)findViewById(R.id.txtPoints);
+        txtHint =(TextView)findViewById(R.id.txtHint);
         btnPlay=(Button)findViewById(R.id.btnPlay);
         ImgAvatar = (ImageView)findViewById(R.id.imgAvatarHint);
-        ImgHint = (ImageView)findViewById(R.id.ivwHInt);
+        //ImgHint = (ImageView)findViewById(R.id.ivwHInt);
         layout = (RelativeLayout)findViewById(R.id.layoutHint);
         firstLayout = (LinearLayout)findViewById(R.id.layoutHintMiddle);
 
@@ -60,6 +62,7 @@ public class ActivityHint extends Activity {
         MySQLiteHelper db = new MySQLiteHelper(this);
 
         txtPoints.setText(Integer.toString(score.getPontuacao()));
+        txtHint.setText(seleclevel.getDica());
 
         switch (aluno.getAvatar().getNome()){
             case "Avatar1":
@@ -135,27 +138,27 @@ public class ActivityHint extends Activity {
             case 1:
                 layout.setBackgroundResource(R.drawable.backgroundlevel1);
                 btnPlay.setBackgroundResource(R.drawable.buttomhin1);
-                ImgHint.setImageResource(R.drawable.level1hint);
+                //ImgHint.setImageResource(R.drawable.level1hint);
                 break;
             case 2:
                 layout.setBackgroundResource(R.drawable.backgroundlevel2);
                 btnPlay.setBackgroundResource(R.drawable.buttomhin2);
-                ImgHint.setImageResource(R.drawable.level2hint);
+                //ImgHint.setImageResource(R.drawable.level2hint);
                 break;
             case 3:
                 layout.setBackgroundResource(R.drawable.backgroundlevel3);
                 btnPlay.setBackgroundResource(R.drawable.buttomhin3);
-                ImgHint.setImageResource(R.drawable.level3hint);
+                //ImgHint.setImageResource(R.drawable.level3hint);
                 break;
             case 4:
                 layout.setBackgroundResource(R.drawable.backgroundlevel4);
                 btnPlay.setBackgroundResource(R.drawable.buttomhin4);
-                ImgHint.setImageResource(R.drawable.level4hint);
+                //ImgHint.setImageResource(R.drawable.level4hint);
                 break;
             case 5:
                 layout.setBackgroundResource(R.drawable.backgroundlevel5);
                 btnPlay.setBackgroundResource(R.drawable.buttomhin5);
-                ImgHint.setImageResource(R.drawable.level5hint);
+                //ImgHint.setImageResource(R.drawable.level5hint);
                 break;
         }
 
