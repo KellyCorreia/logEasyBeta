@@ -575,6 +575,28 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         return alunosList;
     }
 
+    public List<AlternativaAluno> getAlternativasAluno(Integer alunoId) {
+        List<AlternativaAluno> altList = new ArrayList<AlternativaAluno>();
+        String selectQuery = "SELECT * FROM " + TABLE_ALTERNATIVA_ALUNO + " WHERE " + COLUMN_ALUNO_ID + " = " + alunoId + ";";
+        database = this.getReadableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                AlternativaAluno aa = new AlternativaAluno();
+
+                aa.setId(cursor.getInt(0));
+                Alternativa alternativa = new Alternativa();
+                alternativa.setId(cursor.getInt(1));
+                aa.setAlternativa(alternativa);
+                aa.setAluno(this.getAluno(cursor.getInt(2)));
+
+                altList.add(aa);
+
+            } while (cursor.moveToNext());
+        }
+        return altList;
+    }
+
     public List<Aluno> getAllAlunos() {
         List<Aluno> alunosList = new ArrayList<>();
         String selectQuery = "SELECT * FROM " + TABLE_ALUNO + ";";

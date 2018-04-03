@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.example.kelly.logeasyfinal.modelo.Curso;
+import com.example.kelly.logeasyfinal.util.Propriedades;
 
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
@@ -58,7 +59,7 @@ public class ActivityLogEasy extends Activity {
         @Override
         protected Curso doInBackground(Void... params) {
             try {
-                final String url = "http://10.0.0.4:8080/logeasy-webservice/curso/1/";
+                final String url = Propriedades.getUrlServico()+"curso/1/";
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
                 Curso curso = restTemplate.getForObject(url, Curso.class);
