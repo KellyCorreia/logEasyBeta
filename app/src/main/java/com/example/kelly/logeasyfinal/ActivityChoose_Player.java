@@ -27,7 +27,7 @@ public class ActivityChoose_Player extends Activity {
     public void addContentGrid(){
 
         MySQLiteHelper db = new MySQLiteHelper(this);
-        alunos = db.getAllAlunosUsuarios();
+        alunos = db.getAllAlunosLocais();
         if(alunos.size()!=0) {
 
             String imageAvatar;

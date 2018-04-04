@@ -25,7 +25,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 public class MySQLiteHelper extends SQLiteOpenHelper {
@@ -61,7 +63,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ALUNO_NOME = "al_nome";
     private static final String ALUNO_DATABASE_CREATE = "create table "
             + TABLE_ALUNO + "(" + COLUMN_ALUNO_ID
-            + " integer primary key, " + COLUMN_ALUNO_CODIGO
+            + " integer primary key AUTOINCREMENT, " + COLUMN_ALUNO_CODIGO
             + " text not null, " + COLUMN_ALUNO_NOME
             + " text not null, " + COLUMN_AVATAR_ID
             + " integer not null, " + COLUMN_USER_ID
@@ -194,9 +196,17 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ALTERNATIVA_ALUNO_ID = "a_a_id";
     private static final String ALTERNATIVA_ALUNO_DATABASE_CREATE = "CREATE TABLE "
             + TABLE_ALTERNATIVA_ALUNO + "(" + COLUMN_ALTERNATIVA_ALUNO_ID
-            + " integer primary key, " + COLUMN_ALTERNATIVA_ID
+            + " integer primary key AUTOINCREMENT, " + COLUMN_ALTERNATIVA_ID
             + " integer not null, " + COLUMN_ALUNO_ID
             + " integer not null);";
+
+    //Declaration of Table USERS_LOCAIS
+    public static final String TABLE_USER_LOCAL = "table_user_local";
+    public static final String COLUMN_USER_LOCAL_ID = "u_l_id";
+    private static final String USER_LOCAL_DATABASE_CREATE = "CREATE TABLE "
+            + TABLE_USER_LOCAL + "(" + COLUMN_USER_LOCAL_ID
+            + " integer primary key AUTOINCREMENT, " + COLUMN_USER_EMAIL
+            + " text not null);";
 
     private static final String DATABASE_NAME = Propriedades.getNomeBancoSQLite();
     private static final int DATABASE_VERSION = 2;
@@ -225,6 +235,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         db.execSQL(ALTERNATIVA_DATABASE_CREATE);
         db.execSQL(ALTERNATIVA_ALUNO_DATABASE_CREATE);
         db.execSQL(CURSO_DATABASE_CREATE_PRE);
+        db.execSQL(USER_LOCAL_DATABASE_CREATE);
 
         InsertValues data = new InsertValues(this);
         data.insertAllTabelasFixas();
@@ -286,26 +297,51 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     }
 
     //Add user tornou-se add Aluno
-    public Aluno addAluno(Aluno aluno) {
-        Integer idAluno = 0;
+    public Aluno addAlunoLocal(Aluno aluno) {
         Aluno alunoNew = aluno;
         User user = aluno.getUsuario();
+
+        database = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_USER_USERNAME, aluno.getUsuario().getUsername());
         values.put(COLUMN_USER_EMAIL, aluno.getUsuario().getEmail());
         values.put(COLUMN_USER_PASS, aluno.getUsuario().getPassword());
 
-         user.setId((int) database.insert(TABLE_USERS,null, values));
-
-        if (aluno.getId() == null){
-            idAluno = this.getProximoIdAluno();
-        }else {
-            idAluno = aluno.getId();
-        }
+        user.setId((int) database.insert(TABLE_USERS,null, values));
 
         ContentValues values2 = new ContentValues();
-        values2.put(COLUMN_ALUNO_ID, idAluno);
+        values2.put(COLUMN_ALUNO_CODIGO, aluno.getCodigo());
+        values2.put(COLUMN_ALUNO_NOME, aluno.getNome());
+        values2.put(COLUMN_AVATAR_ID, aluno.getAvatar().getId());
+        values2.put(COLUMN_USER_ID, user.getId());
+
+        alunoNew.setId((int) database.insert(TABLE_ALUNO,null, values2));
+        alunoNew.setUsuario(user);
+
+        ContentValues values3 = new ContentValues();
+        values3.put(COLUMN_USER_EMAIL, user.getEmail());
+
+        database.insert(TABLE_USER_LOCAL,null, values3);
+
+        return alunoNew;
+    }
+
+    //Add Aluno para scoreBoard, esses alunos não são mostrados no login
+    public Aluno addAlunoRemoto(Aluno aluno) {
+        Aluno alunoNew = aluno;
+        User user = aluno.getUsuario();
+
+        database = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USER_USERNAME, aluno.getUsuario().getUsername());
+        values.put(COLUMN_USER_EMAIL, aluno.getUsuario().getEmail());
+        values.put(COLUMN_USER_PASS, aluno.getUsuario().getEncryptedPassword());
+
+        user.setId((int) database.insert(TABLE_USERS,null, values));
+
+        ContentValues values2 = new ContentValues();
         values2.put(COLUMN_ALUNO_CODIGO, aluno.getCodigo());
         values2.put(COLUMN_ALUNO_NOME, aluno.getNome());
         values2.put(COLUMN_AVATAR_ID, aluno.getAvatar().getId());
@@ -317,23 +353,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         return alunoNew;
     }
 
-    //Add Aluno para scoreBoard, esses alunos não são mostrados no login
-    public void addAlunoSemUser(Aluno aluno) {
-
-        database = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_ALUNO_ID, aluno.getId());
-        values.put(COLUMN_ALUNO_CODIGO, aluno.getCodigo());
-        values.put(COLUMN_ALUNO_NOME, aluno.getNome());
-        values.put(COLUMN_AVATAR_ID, aluno.getAvatar().getId());
-
-        database.insert(TABLE_ALUNO,null, values);
-
-        return;
-    }
-
-    private Integer getProximoIdAluno() {
+/*    private Integer getProximoIdAluno() {
         Integer proxId = 0;
 
         String selectQuery = "SELECT MAX("+COLUMN_ALUNO_ID+") FROM " + TABLE_ALUNO + " ; ";
@@ -345,7 +365,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         }
 
         return proxId;
-    }
+    }*/
 
     public void addDisciplina(Disciplina d) {
 
@@ -417,19 +437,18 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     }
 
     public void addAlternativaAluno(AlternativaAluno a) {
-        Cursor cursor;
-        Integer proxId = 0;
+        //Cursor cursor;
+        //Integer proxId = 0;
 
-        String selectQuery = "SELECT MAX("+COLUMN_ALTERNATIVA_ALUNO_ID+") FROM " + TABLE_ALTERNATIVA_ALUNO + " ; ";
+        /*String selectQuery = "SELECT MAX("+COLUMN_ALTERNATIVA_ALUNO_ID+") FROM " + TABLE_ALTERNATIVA_ALUNO + " ; ";
         database = this.getReadableDatabase();
         cursor = database.rawQuery(selectQuery, null);
 
         if (cursor.moveToFirst()) {
            proxId = cursor.getInt(0) + 1;
-        }
+        }*/
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_ALTERNATIVA_ALUNO_ID, proxId);
         values.put(COLUMN_ALTERNATIVA_ID, a.getAlternativa().getId());
         values.put(COLUMN_ALUNO_ID, a.getAluno().getId());
 
@@ -554,11 +573,16 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         return dis;
     }
 
-    public List<Aluno> getAllAlunosUsuarios() {
+    public List<Aluno> getAllAlunosLocais() {
         List<Aluno> alunosList = new ArrayList<>();
-        String selectQuery = "SELECT * FROM " + TABLE_ALUNO + " WHERE " + COLUMN_USER_ID + " is not null;";
+        String selectQuery = "SELECT A.* FROM " + TABLE_ALUNO + " A INNER JOIN " + TABLE_USERS + " U ON U."
+                            + COLUMN_USER_ID + " = A." + COLUMN_USER_ID + " WHERE EXISTS (SELECT 0 FROM "
+                            + TABLE_USER_LOCAL + " UL WHERE UL." + COLUMN_USER_EMAIL + " = U." + COLUMN_USER_EMAIL + ")";
+
         database = this.getReadableDatabase();
+
         Cursor cursor = database.rawQuery(selectQuery, null);
+
         if (cursor.moveToFirst()) {
             do {
                 Aluno a = new Aluno();
@@ -575,9 +599,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         return alunosList;
     }
 
-    public List<AlternativaAluno> getAlternativasAluno(Integer alunoId) {
+    public List<AlternativaAluno> getAlternativasAluno(Aluno aluno) {
         List<AlternativaAluno> altList = new ArrayList<AlternativaAluno>();
-        String selectQuery = "SELECT * FROM " + TABLE_ALTERNATIVA_ALUNO + " WHERE " + COLUMN_ALUNO_ID + " = " + alunoId + ";";
+        String selectQuery = "SELECT * FROM " + TABLE_ALTERNATIVA_ALUNO + " WHERE " + COLUMN_ALUNO_ID + " = " + aluno.getId() + ";";
         database = this.getReadableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
@@ -585,16 +609,31 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                 AlternativaAluno aa = new AlternativaAluno();
 
                 aa.setId(cursor.getInt(0));
-                Alternativa alternativa = new Alternativa();
-                alternativa.setId(cursor.getInt(1));
-                aa.setAlternativa(alternativa);
-                aa.setAluno(this.getAluno(cursor.getInt(2)));
+                aa.setAlternativa(this.getAlternativa(cursor.getInt(1)));
+                //aa.setAluno(aluno);
+                //aa.setAluno(this.getAluno(cursor.getInt(2)));
 
                 altList.add(aa);
 
             } while (cursor.moveToNext());
         }
         return altList;
+    }
+
+    public Alternativa getAlternativa(Integer id) {
+        Alternativa alternativa = new Alternativa();
+        String selectQuery = "SELECT * FROM " + TABLE_ALTERNATIVA + " WHERE " + COLUMN_ALTERNATIVA_ID + " = " + id + ";";
+        database = this.getReadableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            //id,texto, valor, questao
+            alternativa.setId(cursor.getInt(0));
+            alternativa.setTexto(cursor.getString(1));
+            alternativa.setValor(cursor.getInt(2) == 1 ? true : false);
+            alternativa.setQuestao(new Questao());
+            alternativa.getQuestao().setId(cursor.getInt(3));
+        }
+        return alternativa;
     }
 
     public List<Aluno> getAllAlunos() {
@@ -829,6 +868,13 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public void deletarCursosPreSelecao(){
         database = this.getWritableDatabase();
         database.delete(TABLE_CURSO_PRE, null, null);
+    }
+
+    /*Remover alternativas_aluno de determinado aluno*/
+    public void deletarAlternativasAluno(Aluno aluno){
+        database = this.getWritableDatabase();
+
+        database.delete(TABLE_ALTERNATIVA_ALUNO, COLUMN_ALUNO_ID + " = " + aluno.getId(), null);
     }
 
     public CursoAluno getCursoAluno(Aluno aluno) {

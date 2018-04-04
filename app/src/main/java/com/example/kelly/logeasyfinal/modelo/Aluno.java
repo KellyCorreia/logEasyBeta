@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 public class Aluno extends AbstractDomainClass implements Parcelable, Serializable {
 	private static final long serialVersionUID = 1L;

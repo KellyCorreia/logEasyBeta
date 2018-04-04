@@ -75,7 +75,7 @@ public class ActivityCreate_User extends Activity {
        /* Code to avoid duplicated usernames or emails on the database.*/
        dbHelper = new MySQLiteHelper(this);
        List<Aluno> alunos;
-       alunos = dbHelper.getAllAlunosUsuarios();
+       alunos = dbHelper.getAllAlunosLocais();
        boolean namefound = false, emailfound = false;
        for(int i = 0; i < alunos.size();i++){
            if (UserName.equals(alunos.get(0).getUsuario().getUsername())){
@@ -96,7 +96,7 @@ public class ActivityCreate_User extends Activity {
            NewAluno = new Aluno(UserName, UserName, user, avatar);
            dbHelper = new MySQLiteHelper(this);
 
-           NewAluno = dbHelper.addAluno(NewAluno);
+           NewAluno = dbHelper.addAlunoLocal(NewAluno);
 
            if (NewAluno.getId()!=0) {
                Intent intent = new Intent(ActivityCreate_User.this, ActivityLogin.class);

@@ -209,7 +209,7 @@ public class ActivityChoose_Curso extends Activity {
             }
             /*Set<Integer> idAlunos = alunos.keySet();
             for(Integer id : idAlunos){
-                db.addAlunoSemUser(alunos.get(id));
+                db.addAlunoRemoto(alunos.get(id));
             }
             Set<Integer> idAltAlunos = altAlunos.keySet();
             for (Integer id : idAltAlunos){
