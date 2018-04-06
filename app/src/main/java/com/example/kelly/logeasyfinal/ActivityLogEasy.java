@@ -59,7 +59,7 @@ public class ActivityLogEasy extends Activity {
         @Override
         protected Curso doInBackground(Void... params) {
             try {
-                final String url = Propriedades.getUrlServico()+"curso/1/";
+                final String url = Propriedades.getUrlServico()+"curso/2/";
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
                 Curso curso = restTemplate.getForObject(url, Curso.class);

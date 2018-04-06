@@ -1,9 +1,12 @@
 package com.example.kelly.logeasyfinal.modelo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.util.List;
 
-public class Disciplina extends AbstractDomainClass implements Serializable {
+public class Disciplina extends AbstractDomainClass implements Serializable, Parcelable {
 	private static final long serialVersionUID = 1L;
 
 	 private String codigo;
@@ -13,6 +16,14 @@ public class Disciplina extends AbstractDomainClass implements Serializable {
 	private List<Curso> cursos;
 
 	public Disciplina() {
+	}
+
+	public Disciplina(Parcel in) {
+		readFromParcel(in);
+	}
+
+	public Disciplina(Integer i){
+		this.id = i;
 	}
 
 	public String getCodigo() {
@@ -50,5 +61,35 @@ public class Disciplina extends AbstractDomainClass implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel out, int flags) {
+		out.writeInt(id);
+		out.writeString(codigo);
+		out.writeString(nome);
+		out.writeString(descricao);
+	}
+
+	private void readFromParcel(Parcel in) {
+		id = in.readInt();
+		codigo = in.readString();
+		nome = in.readString();
+		descricao = in.readString();
+	}
+
+	@SuppressWarnings("unchecked")
+	public static final Creator CREATOR = new Creator() {
+		public Disciplina createFromParcel(Parcel in) {
+			return new Disciplina(in);
+		}
+		public Disciplina[] newArray(int size) {
+			return new Disciplina[size];
+		}
+	};
 
 }

@@ -3,13 +3,18 @@ package com.example.kelly.logeasyfinal.modelo;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.util.Calendar;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AlternativaAluno extends AbstractDomainClass implements Serializable, Parcelable {
 	private static final long serialVersionUID = 1L;
 
 	private Alternativa alternativa;
+	@JsonIgnore
 	private Aluno aluno;
 	
 	private Calendar dataHora;

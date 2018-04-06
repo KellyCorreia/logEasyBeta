@@ -65,7 +65,7 @@ public class ActivityHint extends Activity {
         txtHint.setText(seleclevel.getDica());
 
         switch (aluno.getAvatar().getNome()){
-            case "Avatar1":
+            case "avatar1":
                 int random = rd.nextInt(4);
                 if(random == 0)
                     ImgAvatar.setImageResource(R.drawable.avatar12);
@@ -82,7 +82,7 @@ public class ActivityHint extends Activity {
                 }
                 break;
 
-            case "Avatar2":
+            case "avatar2":
                 random = rd.nextInt(4);
                 if(random == 0)
                     ImgAvatar.setImageResource(R.drawable.avatar22);
@@ -99,7 +99,7 @@ public class ActivityHint extends Activity {
                 }
                 break;
 
-            case "Avatar3":
+            case "avatar3":
                 random = rd.nextInt(4);
                 if(random == 0)
                     ImgAvatar.setImageResource(R.drawable.avatar32);
@@ -116,7 +116,7 @@ public class ActivityHint extends Activity {
                 }
                 break;
 
-            case "Avatar4":
+            case "avatar4":
                 random = rd.nextInt(4);
                 if(random == 0)
                     ImgAvatar.setImageResource(R.drawable.avatar42);

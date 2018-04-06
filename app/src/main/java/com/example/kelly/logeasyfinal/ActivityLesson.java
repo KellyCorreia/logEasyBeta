@@ -14,9 +14,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.kelly.logeasyfinal.modelo.Aluno;
+import com.example.kelly.logeasyfinal.modelo.AmbienteAvatar;
 import com.example.kelly.logeasyfinal.modelo.Conteudo;
 import com.example.kelly.logeasyfinal.modelo.Curso;
 import com.example.kelly.logeasyfinal.modelo.CursoAluno;
+import com.example.kelly.logeasyfinal.persistencia.MySQLiteHelper;
 
 import java.util.Random;
 
@@ -28,6 +30,8 @@ public class ActivityLesson extends FragmentActivity {
     LinearLayout firstLayout;
     Conteudo selecLevel;
     ImageView ImgAvatar;
+    AmbienteAvatar ambienteAvatar;
+    MySQLiteHelper db = null;
     Random rd = new Random();
 
     Aluno aluno;
@@ -40,11 +44,16 @@ public class ActivityLesson extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lesson);
 
+        db = new MySQLiteHelper(this);
+
         Bundle extras = getIntent().getExtras();
         aluno = extras.getParcelable("chosenUser");
         curso = extras.getParcelable("chosenCurso");
         selecLevel = extras.getParcelable("chosenLevel");
         score = extras.getParcelable("userScore");
+        ambienteAvatar = db.getAmbienteAvatar(selecLevel.getNivel().getAmbiente().getId(), aluno.getAvatar().getId());
+        String licao = selecLevel.getLicao();
+        selecLevel.setLicao(ambienteAvatar.getFalaInicialNivel()+". " + " \n Aqui vai a sua Lição:  " + " \n \n " + licao);
 
         txtPoints = (TextView)findViewById(R.id.txtPoints);
         btnPlay = (ImageButton)findViewById(R.id.btnPlay);
@@ -95,7 +104,7 @@ public class ActivityLesson extends FragmentActivity {
 
 
         switch (aluno.getAvatar().getNome()) {
-            case "Avatar1":
+            case "avatar1":
                 int random = rd.nextInt(4);
                 if (random == 0)
                     ImgAvatar.setImageResource(R.drawable.avatar12);
@@ -112,7 +121,7 @@ public class ActivityLesson extends FragmentActivity {
                 }
                 break;
 
-            case "Avatar2":
+            case "avatar2":
                 random = rd.nextInt(4);
                 if (random == 0)
                     ImgAvatar.setImageResource(R.drawable.avatar22);
@@ -129,7 +138,7 @@ public class ActivityLesson extends FragmentActivity {
                 }
                 break;
 
-            case "Avatar3":
+            case "avatar3":
                 random = rd.nextInt(4);
                 if (random == 0)
                     ImgAvatar.setImageResource(R.drawable.avatar32);
@@ -146,7 +155,7 @@ public class ActivityLesson extends FragmentActivity {
                 }
                 break;
 
-            case "Avatar4":
+            case "avatar4":
                 random = rd.nextInt(4);
                 if (random == 0)
                     ImgAvatar.setImageResource(R.drawable.avatar42);

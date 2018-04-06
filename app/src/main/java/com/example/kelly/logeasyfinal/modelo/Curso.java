@@ -35,6 +35,10 @@ public class Curso extends AbstractDomainClass implements Parcelable, Serializab
         descricao=desc;
     }
 
+    public Curso(Integer i){
+        this.id = i;
+    }
+
     public String getNome() {
         return nome;
     }
@@ -101,12 +105,14 @@ public class Curso extends AbstractDomainClass implements Parcelable, Serializab
         out.writeInt(id);
         out.writeString(nome);
         out.writeString(descricao);
+        //out.writeParcelable(disciplina, flags);
     }
 
     private void readFromParcel(Parcel in) {
         id = in.readInt();
         nome = in.readString();
         descricao = in.readString();
+       // disciplina = in.readParcelable(Disciplina.class.getClassLoader());
     }
 
     @SuppressWarnings("unchecked")

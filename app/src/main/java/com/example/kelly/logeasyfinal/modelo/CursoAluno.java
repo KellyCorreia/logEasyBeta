@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 
 public class CursoAluno implements Serializable, Parcelable {
@@ -94,4 +95,5 @@ public class CursoAluno implements Serializable, Parcelable {
 			return new CursoAluno[size];
 		}
 	};
+
 }

@@ -15,9 +15,7 @@ import android.widget.LinearLayout;
 import com.example.kelly.logeasyfinal.modelo.Alternativa;
 import com.example.kelly.logeasyfinal.modelo.AlternativaAluno;
 import com.example.kelly.logeasyfinal.modelo.Aluno;
-import com.example.kelly.logeasyfinal.modelo.AmbienteAvatar;
 import com.example.kelly.logeasyfinal.modelo.Conteudo;
-import com.example.kelly.logeasyfinal.modelo.Nivel;
 import com.example.kelly.logeasyfinal.modelo.Questao;
 import com.example.kelly.logeasyfinal.persistencia.MySQLiteHelper;
 import com.example.kelly.logeasyfinal.modelo.Curso;
@@ -31,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 
 public class ActivityChoose_Curso extends Activity {
@@ -43,6 +40,7 @@ public class ActivityChoose_Curso extends Activity {
     private Curso cursoSelecionado;
     private Aluno aluno;
     private  MySQLiteHelper db = null;
+    int i;
 
     public void addContentGrid(){
 
@@ -50,7 +48,7 @@ public class ActivityChoose_Curso extends Activity {
 
         if(cursos.size()!=0) {
             for (int i = 0; i < cursos.size(); i++) {
-                imageId.add(i, R.drawable.level1s);
+                imageId.add(i, R.drawable.imgselectcursos);
                 web.add(i, cursos.get(i).getNome());
             }
         }
@@ -69,7 +67,7 @@ public class ActivityChoose_Curso extends Activity {
         //Getting the object aluno from the previous screen
         Bundle extras = getIntent().getExtras();
         aluno = extras.getParcelable("chosenUser");
-        final int i = extras.getInt("toast");
+        i = extras.getInt("toast");
 
         addContentGrid();
         //Log.d("Insert: ", "values from db" + web[0] + "  " + web[1]);
@@ -90,14 +88,6 @@ public class ActivityChoose_Curso extends Activity {
                 //Remover o curso que estiver no banco e add o novo.
                 cursoSelecionado = cursos.get(position);
                 new HttpRequestTaskCursoById().execute();
-
-                Intent intent = new Intent(ActivityChoose_Curso.this, ActivityLevels.class);
-                intent.putExtra("chosenUser", (Parcelable) aluno);
-                intent.putExtra("toast", i);
-                intent.putExtra("chosenCurso", (Parcelable) cursos.get(position));
-                //intent.putExtra(users.get(position).getUsername(), users.get(position).getAvatar());//now I have to get the data in log in
-                startActivity(intent);
-                finish();
             }
         });
 
@@ -105,7 +95,7 @@ public class ActivityChoose_Curso extends Activity {
         btncontinuar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.getAllCursos();
+                cursos = db.getAllCursos();
                 cursoSelecionado = cursos.get(0);
                 Intent intent = new Intent(ActivityChoose_Curso.this, ActivityLevels.class);
                 intent.putExtra("chosenUser", (Parcelable) aluno);
@@ -190,19 +180,22 @@ public class ActivityChoose_Curso extends Activity {
             db.deletarCursos();
             db.addDisciplina(curso.getDisciplina());
             db.addCurso(curso);
+            //curso.getConteudos().remove(2);
             for (Conteudo conteudo : curso.getConteudos()){
-                conteudo.setCurso(curso);
-                db.addConteudo(conteudo);
-                for (Questao questao :  conteudo.getQuestoes()){
-                    questao.setConteudo(conteudo);
-                    db.addQuestao(questao);
-                    for (Alternativa alternativa : questao.getAlternativas()) {
-                        alternativa.setQuestao(questao);
-                        db.addAlternativa(alternativa);
-                        for (AlternativaAluno altAluno :  alternativa.getAlternativaAlunos()){
-                            altAluno.setAlternativa(alternativa);
-                            altAlunos.put(altAluno.getId(), altAluno);
-                            alunos.put(altAluno.getAluno().getId(), altAluno.getAluno());
+                if (conteudo.getLicao()!=null){
+                    conteudo.setCurso(curso);
+                    db.addConteudo(conteudo);
+                    for (Questao questao :  conteudo.getQuestoes()){
+                        questao.setConteudo(conteudo);
+                        db.addQuestao(questao);
+                        for (Alternativa alternativa : questao.getAlternativas()) {
+                            alternativa.setQuestao(questao);
+                            db.addAlternativa(alternativa);
+                            /*for (AlternativaAluno altAluno :  alternativa.getAlternativaAlunos()){
+                                altAluno.setAlternativa(alternativa);
+                                altAlunos.put(altAluno.getId(), altAluno);
+                                alunos.put(altAluno.getAluno().getId(), altAluno.getAluno());
+                            }*/
                         }
                     }
                 }
@@ -215,6 +208,15 @@ public class ActivityChoose_Curso extends Activity {
             for (Integer id : idAltAlunos){
                 db.addAlternativaAluno(altAlunos.get(id));
             }*/
+
+            Intent intent = new Intent(ActivityChoose_Curso.this, ActivityLevels.class);
+            intent.putExtra("chosenUser", (Parcelable) aluno);
+            intent.putExtra("toast", i);
+            intent.putExtra("chosenCurso", (Parcelable) curso);
+            //intent.putExtra(users.get(position).getUsername(), users.get(position).getAvatar());//now I have to get the data in log in
+            startActivity(intent);
+            finish();
+
             Log.i("cursoname","CURSO==>" + curso.getId()+", "+ curso.getNome());
             Log.i("conteudo","CONTEUDOS==>" + curso.getConteudos());
             Log.i("disciplina","DISCIPLINA==>" + curso.getDisciplina());

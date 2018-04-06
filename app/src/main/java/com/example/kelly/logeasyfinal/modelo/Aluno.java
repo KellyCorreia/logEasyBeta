@@ -3,10 +3,13 @@ package com.example.kelly.logeasyfinal.modelo;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Aluno extends AbstractDomainClass implements Parcelable, Serializable {
 	private static final long serialVersionUID = 1L;
 

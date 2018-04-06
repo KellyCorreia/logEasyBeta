@@ -13,7 +13,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.kelly.logeasyfinal.modelo.Aluno;
 import com.example.kelly.logeasyfinal.modelo.Conteudo;
+import com.example.kelly.logeasyfinal.persistencia.MySQLiteHelper;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -29,6 +31,7 @@ public class FragmentSlidingLesson extends Fragment {
 
     private ViewPager mViewPager;
     private Conteudo chosenLevel;
+    private Aluno aluno;
     private String lessonS;
     ArrayList<String> lessonParts = new ArrayList<>();
 
@@ -37,6 +40,8 @@ public class FragmentSlidingLesson extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         chosenLevel = (Conteudo) getArguments().getParcelable("chosenLevel");
+        aluno = (Aluno) getArguments().getParcelable("chosenUser");
+
         //lesson = new SpannedString(Html.fromHtml(chosenLevel.getLicao()));
         lessonS = chosenLevel.getLicao();
         splitLesson();

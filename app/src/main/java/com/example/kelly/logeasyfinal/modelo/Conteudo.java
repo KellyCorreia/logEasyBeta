@@ -26,6 +26,10 @@ public class Conteudo extends AbstractDomainClass implements Serializable, Parce
         this.curso = new Curso();
     }
 
+    public Conteudo(Integer i){
+        this.id = i;
+    }
+
     public String getNome() {
         return nome;
     }

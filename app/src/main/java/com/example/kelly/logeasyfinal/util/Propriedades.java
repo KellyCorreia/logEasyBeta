@@ -15,6 +15,9 @@ public class Propriedades {
 
     private final static String urlServico = "http://10.0.0.4:8080/logeasy-webservice/";
     //private final static String urlServico = "http://172.31.14.215:8080/logeasy-webservice/";
+    //private final static String urlServico = "http://192.168.43.49:8080/logeasy-webservice/";
+    //private final static String urlServico = "http://172.31.15.41:8080/logeasy-webservice/";
+
     private final static String nomeBancoSQLite = "LogEasyBeta.db";
 
     public static String getUrlServico() {

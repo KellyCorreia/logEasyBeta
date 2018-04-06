@@ -3,6 +3,8 @@ package com.example.kelly.logeasyfinal.modelo;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -12,6 +14,7 @@ public class Alternativa extends AbstractDomainClass implements Serializable, Pa
     private boolean valor;
 
     private Questao questao;
+    @JsonIgnore
     private List<AlternativaAluno> alternativaAlunos;
 
 

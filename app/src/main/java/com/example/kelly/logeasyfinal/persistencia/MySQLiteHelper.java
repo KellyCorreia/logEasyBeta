@@ -19,12 +19,14 @@ import com.example.kelly.logeasyfinal.modelo.Disciplina;
 import com.example.kelly.logeasyfinal.modelo.Nivel;
 import com.example.kelly.logeasyfinal.modelo.Questao;
 import com.example.kelly.logeasyfinal.modelo.User;
+import com.example.kelly.logeasyfinal.util.ComparatorCursoAluno;
 import com.example.kelly.logeasyfinal.util.Propriedades;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -851,6 +853,25 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         return ambiente;
     }
 
+    public AmbienteAvatar getAmbienteAvatar(int idAmbiente, int idAvatar) {
+        AmbienteAvatar ambienteAvatar = null;
+        Cursor cursor;
+        String selectQuery = "SELECT * FROM " + TABLE_AMBIENTE_AVATAR + " WHERE " + COLUMN_AMBIENTE_ID + " = " + idAmbiente
+                            + " AND " + COLUMN_AVATAR_ID + " = " + idAvatar + " ; ";
+
+        database = this.getReadableDatabase();
+        cursor = database.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            //id, fala, ambiente, avatar
+            ambienteAvatar = new AmbienteAvatar();
+            ambienteAvatar.setId(cursor.getInt(0));
+            ambienteAvatar.setFalaInicialNivel(cursor.getString(1));
+        }
+        return ambienteAvatar;
+    }
+
+
     /*Remover curso*/
     public void deletarCursos(){
         database = this.getWritableDatabase();
@@ -951,9 +972,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
             listaScore.add(item);
         }
+        Collections.sort (listaScore, new ComparatorCursoAluno());
 
         return listaScore;
     }
-
 }
 
