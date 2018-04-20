@@ -46,8 +46,8 @@ public class FragmentUserDetails extends Fragment {
         TextView emailU = (TextView)view.findViewById(R.id.emailU);
         TextView pointsU = (TextView)view.findViewById(R.id.pointsU);
         TextView levelU = (TextView)view.findViewById(R.id.levelU);
-        TextView answeredWrongU = (TextView)view.findViewById(R.id.answeredWrongU);
-        TextView answeredQuestions = (TextView)view.findViewById(R.id.answeredQuestionsU);
+        //TextView answeredWrongU = (TextView)view.findViewById(R.id.answeredWrongU);
+        //TextView answeredQuestions = (TextView)view.findViewById(R.id.answeredQuestionsU);
 
         circleAvatarV = getResources().getIdentifier(aluno.getAvatar().getNome().toLowerCase(Locale.getDefault()),"drawable",getActivity().getPackageName());
         circleAvatar.setImageResource(circleAvatarV);
@@ -68,13 +68,13 @@ public class FragmentUserDetails extends Fragment {
         pointsU.setText((String.valueOf(pointsUV)));
 
         answeredWrongUV = userScore.getPercentualErro();
-        answeredWrongU.setText((String.valueOf(answeredWrongUV)));
+        //answeredWrongU.setText((String.valueOf(answeredWrongUV)));
 
         levelUV = Integer.toString(userScore.getConteudo().getNivel().getOrdem());
         levelU.setText(levelUV);
 
         questionsA = (int) Math.floor(answeredWrongUV*100);
-        answeredQuestions.setText(String.valueOf(questionsA));
+        //answeredQuestions.setText(String.valueOf(questionsA));
 
         mProgress = (ProgressBar) view.findViewById(R.id.progressBarU);
         mProgress.setProgress(pointsUV);

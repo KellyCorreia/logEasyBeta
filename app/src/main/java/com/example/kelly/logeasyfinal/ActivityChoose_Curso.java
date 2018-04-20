@@ -147,8 +147,9 @@ public class ActivityChoose_Curso extends Activity {
 
             for (Curso curso: listaCursos) {
 
-                db.addCursoPreSelecao(curso);
-
+                if(curso != null) {
+                    db.addCursoPreSelecao(curso);
+                }
                 Log.i("disciplina-inserida", curso.getDisciplina().getId() + " , " + curso.getDisciplina().getCodigo());
                 Log.i("curso-inserid", curso.getId() + " , " + curso.getCodigo());
             }

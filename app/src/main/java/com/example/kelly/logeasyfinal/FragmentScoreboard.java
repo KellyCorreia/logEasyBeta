@@ -60,7 +60,26 @@ public class FragmentScoreboard extends Fragment {
         for (int i = 0; i < cursoAlunoList.size(); i++){
 
             list.add(new ScoreboardScreen());
-            list.get(i).setLevelName(cursoAlunoList.get(i).getConteudo().getNivel().getAmbiente().getElemento());
+            if (cursoAlunoList.get(i).getPontuacao() < 50){
+                list.get(i).setLevelName("Ar");
+            }else {
+                if (cursoAlunoList.get(i).getPontuacao() < 100){
+                    list.get(i).setLevelName("Água");
+                }else{
+                    if (cursoAlunoList.get(i).getPontuacao() < 150)
+                    list.get(i).setLevelName("Terra");
+                    else{
+                        if (cursoAlunoList.get(i).getPontuacao() < 200){
+                            list.get(i).setLevelName("Fogo");
+                        }else {
+                            if (cursoAlunoList.get(i).getPontuacao() >= 200) {
+                                list.get(i).setLevelName("Mestre do Mundo");
+                            }
+                        }
+                    }
+
+                }
+            }
             list.get(i).setUserName(cursoAlunoList.get(i).getAluno().getNome());
             list.get(i).setPoints(cursoAlunoList.get(i).getPontuacao());
             list.get(i).setWrongPerc(cursoAlunoList.get(i).getPercentualErro());

@@ -52,7 +52,7 @@ public class ActivityLogEasy extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        new HttpRequestTask().execute();
+        //new HttpRequestTask().execute();
     }
 
     private class HttpRequestTask extends AsyncTask<Void, Void, Curso> {
@@ -75,9 +75,11 @@ public class ActivityLogEasy extends Activity {
 
         @Override
         protected void onPostExecute(Curso curso) {
-            Log.i("cursoname","CURSO==>" + curso.getId()+", "+ curso.getNome());
-            Log.i("conteudo","CONTEUDOS==>" + curso.getConteudos());
-            Log.i("disciplina","DISCIPLINA==>" + curso.getDisciplina());
+            if (curso != null && curso.getDisciplina() != null){
+                Log.i("cursoname","CURSO==>" + curso.getId()+", "+ curso.getNome());
+                //Log.i("conteudo","CONTEUDOS==>" + curso.getConteudos());
+                Log.i("disciplina","DISCIPLINA==>" + curso.getDisciplina());
+            }
         }
 
     }
